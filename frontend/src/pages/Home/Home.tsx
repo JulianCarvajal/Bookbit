@@ -29,7 +29,10 @@ export default function Home() {
         <Link to="/register"><button>Registrarse</button></Link>
       </div>
     </main>
-    <UsersList></UsersList>
+    <section className='books-page'>
+      <p>Mira todos nuestros libros</p>
+      <Link to="/books"><button className='book-buttons'>Mira todos los libros</button></Link>
+    </section>
     <footer className="footer">
       <p>Datos de contacto y derechos</p>
     </footer>

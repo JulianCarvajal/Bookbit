@@ -35,6 +35,26 @@ const BooksList: React.FC = () => {
     fetchBooks();
   }, []);
 
+  const handleDelete = async (id: number) => {
+    try {
+        const response = await fetch(`http://localhost:4000/books/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error deleting book');
+        }
+  
+        // Update the state to remove the deleted book
+        setBooks((prevBooks) => prevBooks.filter(book => book.id !== id));
+      } catch (error) {
+        setError('Failed to delete the book');
+      }
+  }
+
   return (
     <div className="books-list-container">
       <h1>Nuestros libros disponibles, pronto tendremos más. También puedes añadir un libro si quieres :)</h1>
@@ -51,7 +71,12 @@ const BooksList: React.FC = () => {
               <p><strong>Fecha de Publicación:</strong> {book.publicationDate}</p>
               <div className="book-actions">
                 <button className="modify-button">Modificar</button>
-                <button className="delete-button">Eliminar</button>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDelete(book.id)}
+                >
+                  Eliminar
+                </button>
               </div>
             </div>
           ))}

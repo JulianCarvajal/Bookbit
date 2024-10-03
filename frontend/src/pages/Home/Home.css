@@ -29,12 +29,12 @@
     text-decoration: none;
   }
   
-  .auth-buttons {
+  .auth-buttons, .book-buttons {
     display: flex;
     gap: 10px;
   }
   
-  .auth-buttons button {
+  .auth-buttons button, .book-buttons {
     background-color: #622281; /* Colores que contrastan bien con el fondo */
     color: white;
     padding: 10px 20px;
@@ -44,7 +44,7 @@
     font-size: 16px;
   }
   
-  .auth-buttons button:hover {
+  .auth-buttons button:hover, .books-buttons {
     background-color: #933bc0;
   }
   
@@ -73,6 +73,22 @@
     margin-top: 20px;
   }
   
+  .books-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .books-page p {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .book-button {
+    align-self: center;
+  }
+
   /* Estilos para el footer */
   .footer {
     text-align: center;
