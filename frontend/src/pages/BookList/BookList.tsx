@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './BookList.css';
+import AddBookForm from '../../components/AddBookForm';
 
 interface Book {
   id: number;
@@ -13,6 +14,7 @@ interface Book {
 const BooksList: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isAddingBook, setIsAddingBook] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -55,6 +57,25 @@ const BooksList: React.FC = () => {
       }
   }
 
+  const handleAddBook = async (newBook: Book) => {
+    try {
+      const response = await fetch('http://localhost:4000/books', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newBook),
+      });
+      if (!response.ok) {
+        throw new Error('Error adding book');
+      }
+      const addedBook = await response.json();
+      setBooks((prev) => [...prev, addedBook]);
+    } catch (err) {
+      setError('Failed to add book');
+    }
+  };
+
   return (
     <div className="books-list-container">
       <h1>Nuestros libros disponibles, pronto tendremos más. También puedes añadir un libro si quieres :)</h1>
@@ -82,7 +103,10 @@ const BooksList: React.FC = () => {
           ))}
         </div>
       )}
-      <button className="add-book-button">Añadir libro</button>
+      <button className="add-book-button" onClick={() => setIsAddingBook(true)}>Añadir libro</button>
+      {isAddingBook && (
+        <AddBookForm onClose={() => setIsAddingBook(false)} onAddBook={handleAddBook} />
+      )}
     </div>
   );
 };
