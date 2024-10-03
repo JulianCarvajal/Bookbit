@@ -3,40 +3,57 @@ import React, { useEffect, useState } from 'react';
 interface User {
   id: number;
   name: string;
+  birth_date: string;
   email: string;
-  // Agrega más propiedades según lo que retorne el JSON
+  id_status: number;
+  coins: number;
 }
 
 const UsersList: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]); // Estado para almacenar los usuarios
-  const [loading, setLoading] = useState<boolean>(true); // Para mostrar un mensaje de carga
-  const [error, setError] = useState<string | null>(null); // Para manejar errores
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Función para hacer la solicitud al backend
     const fetchUsers = async () => {
       try {
-        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/users');
+        // Hacer solicitud al backend
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/users', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        // Verificar si la respuesta es OK
         if (!response.ok) {
-          throw new Error('Error al obtener los usuarios');
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
+
+        // Intentar parsear la respuesta como JSON
         const data = await response.json();
+        
+        // Verificar si lo que se recibió es un array
+        if (!Array.isArray(data)) {
+          throw new Error('Respuesta inesperada, no es un array de usuarios.');
+        }
+
         setUsers(data); // Guardar la respuesta en el estado
       } catch (error: any) {
-        setError(error.message);
+        setError(error.message || 'Error al obtener los datos');
       } finally {
-        setLoading(false); // Quitar el mensaje de carga
+        setLoading(false); // Quitar el estado de carga
       }
     };
 
     fetchUsers();
   }, []);
 
-  // Mostrar el estado de carga, errores o la lista de usuarios
+  // Mostrar el estado de carga
   if (loading) {
     return <div>Cargando usuarios...</div>;
   }
 
+  // Mostrar el error
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -47,7 +64,7 @@ const UsersList: React.FC = () => {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            {user.name} - {user.email}
+            {user.name} - {user.email} - {user.birth_date} - {user.coins} monedas
           </li>
         ))}
       </ul>
