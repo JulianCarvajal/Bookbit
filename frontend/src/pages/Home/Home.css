@@ -1,0 +1,81 @@
+  .home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: linear-gradient(to right bottom, #000000, #15010a, #1f0315, #26041f, #2c052b, #38093c, #420e4f, #4b1664, #622281, #7a2ea0, #933bc0, #ad49e1);
+    color: white;
+  }
+  
+  /* Estilos para el header */
+  .header {
+    display: flex;
+    justify-content: space-evenly; /* Distribuir los elementos a los lados */
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .logo {
+    height: 50px;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .auth-buttons button {
+    background-color: #622281; /* Colores que contrastan bien con el fondo */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .auth-buttons button:hover {
+    background-color: #933bc0;
+  }
+  
+  /* Estilos para el main */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .main-content h1 {
+    font-size: 4rem;
+    color: #ad49e1; /* Resaltando el título en un tono claro */
+  }
+  
+  .main-content h2 {
+    font-size: 2rem;
+    color: #933bc0;
+    margin-bottom: 20px;
+  }
+  
+  .main-content .auth-buttons {
+    margin-top: 20px;
+  }
+  
+  /* Estilos para el footer */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
