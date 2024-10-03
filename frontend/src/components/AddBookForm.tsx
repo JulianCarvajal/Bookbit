@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './AddBookForm.css';
 
 interface Book {
-  id: number;
   name: string;
   author: string;
   pages: number;
@@ -17,7 +16,6 @@ interface AddBookFormProps {
 
 const AddBookForm: React.FC<AddBookFormProps> = ({ onClose, onAddBook }) => {
   const [newBook, setNewBook] = useState<Book>({
-    id: 0,
     name: '',
     author: '',
     pages: 0,
@@ -44,7 +42,6 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onClose, onAddBook }) => {
       <div className="add-book-form">
         <h2>Añadir Nuevo Libro</h2>
         <form onSubmit={handleSubmit}>
-          <input type="number" name="id" placeholder="ID" required onChange={handleChange} />
           <input type="text" name="name" placeholder="Nombre" required onChange={handleChange} />
           <input type="text" name="author" placeholder="Autor" required onChange={handleChange} />
           <input type="number" name="pages" placeholder="Páginas" required onChange={handleChange} />

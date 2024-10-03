@@ -57,7 +57,7 @@ const BooksList: React.FC = () => {
       }
   }
 
-  const handleAddBook = async (newBook: Book) => {
+  const handleAddBook = async (newBook: Omit<Book, 'id'>) => {
     try {
       const response = await fetch('http://localhost:4000/books', {
         method: 'POST',
@@ -66,15 +66,20 @@ const BooksList: React.FC = () => {
         },
         body: JSON.stringify(newBook),
       });
+  
       if (!response.ok) {
         throw new Error('Error adding book');
       }
-      const addedBook = await response.json();
+  
+      const addedBook: Book = await response.json();
+  
+      // Añadimos el nuevo libro a la lista
       setBooks((prev) => [...prev, addedBook]);
     } catch (err) {
       setError('Failed to add book');
     }
   };
+  
 
   return (
     <div className="books-list-container">
