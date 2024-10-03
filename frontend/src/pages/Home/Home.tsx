@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import Button from "../../components/Button";
+import UsersList from "../../components/UsersList";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
         <Link to="/register"><button>Registrarse</button></Link>
       </div>
     </main>
+    <UsersList></UsersList>
     <footer className="footer">
       <p>Datos de contacto y derechos</p>
     </footer>
