@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './AuthForm.css';
+import GoogleLoginButton from './GoogleLoginButton';
 
 interface AuthFormProps {
   title: string;
@@ -19,12 +20,28 @@ const AuthForm: React.FC<AuthFormProps> = ({
   linkPath,
   linkDescription,
 }) => {
+  const handleLoginSuccess = (token: string) => {
+    console.log("Login exitoso, token recibido:", token);
+    // Aquí podrías guardar el token, redirigir al usuario o hacer una petición al backend
+    localStorage.setItem("googleToken", token); // Ejemplo de cómo almacenar el token
+    // También puedes redirigir al usuario
+    // window.location.href = '/home'; // O usar React Router para redirigir
+  };
+
+  // Función que se ejecuta cuando el login falla
+  const handleLoginFailure = () => {
+    console.log("Error en el login");
+    // Puedes mostrar un mensaje de error o manejar el flujo de error
+  };
   return (
     <div className="auth-form-container">
       <div className="auth-form">
         <h1>{title}</h1>
         <p>{message}</p>
-        <button className="google-auth-button">{buttonText}</button>
+        <GoogleLoginButton 
+          onLoginSuccess={handleLoginSuccess} // Llamar a handleLoginSuccess en caso de éxito
+          onLoginFailure={handleLoginFailure} // Llamar a handleLoginFailure en caso de error
+        />
         <p>
           {linkDescription} <Link to={linkPath}>{linkText}</Link>
         </p>
