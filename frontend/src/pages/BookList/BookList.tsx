@@ -19,7 +19,7 @@ const BooksList: React.FC = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://localhost:4000/books', {
+        const response = await fetch('https://bookbitback-production.up.railway.app/books', {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -39,7 +39,7 @@ const BooksList: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     try {
-        const response = await fetch(`http://localhost:4000/books/${id}`, {
+        const response = await fetch(`https://bookbitback-production.up.railway.app/books/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const BooksList: React.FC = () => {
 
   const handleAddBook = async (newBook: Omit<Book, 'id'>) => {
     try {
-      const response = await fetch('http://localhost:4000/books', {
+      const response = await fetch('https://bookbitback-production.up.railway.app/books', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

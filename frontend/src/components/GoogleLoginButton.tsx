@@ -13,7 +13,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ onLoginSuccess, o
     const token = response.credential;
     if (token) {
       // Enviar token al backend para verificar si el usuario está registrado
-      fetch('http://localhost:4000/auth/google-login', {
+      fetch('https://bookbitback-production.up.railway.app/auth/google-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

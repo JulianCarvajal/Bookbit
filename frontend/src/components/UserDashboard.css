@@ -1,0 +1,71 @@
+/* Estilo base para el UserDashboard */
+.user-dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Avatar y Mascota */
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.avatar, .pet {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #ad49e1;
+}
+
+/* Inventario tipo Minecraft */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 50px);
+    grid-gap: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.inventory-slot {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #ad49e1;
+    position: relative;
+}
+
+.inventory-item {
+    width: 40px;
+    height: 40px;
+}
+
+.inventory-slot:hover .item-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.item-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.2s ease-in-out;
+}

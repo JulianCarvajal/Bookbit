@@ -3,5 +3,8 @@
     "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1"
+  },
+  "dependencies": {
+    "react-icons": "^5.4.0"
   }
 }

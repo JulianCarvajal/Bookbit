@@ -1,0 +1,34 @@
+.user-section {
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
+  
+.section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ad49e1;
+    margin-bottom: 15px;
+}
+  
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+  
+.manage-button {
+    background-color: #933bc0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+  
+.manage-button:hover {
+    background-color: #ad49e1;
+}  

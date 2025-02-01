@@ -1,0 +1,32 @@
+.info-card {
+    background-color: rgb(255, 255, 255);
+    color: black;
+    border: 5px solid #933bc0;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
+    text-align: center;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-in-out;
+}
+
+.info-card:hover {
+    transform: scale(1.05);
+}
+
+.info-card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ad49e1;
+    margin-bottom: 10px;
+}
+
+.info-card-content {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.info-card-content span {
+    font-weight: bold;
+    color: #ffc107;
+}

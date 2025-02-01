@@ -1,93 +1,119 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./UserHome.css";
 import { Header } from "../../components/Header";
-import { Challenges } from "../../components/Challenges";
-import { useNavigate } from "react-router-dom";
+import UserSection from "../../components/UserSection";
+import UserDashboard from "../../components/UserDashboard";
+import { User } from "../../types/userTypes";
 
 export default function UserHome() {
-    const navigate = useNavigate();
+    const [user, setUser] = useState<User | null>(null);
 
-    const token = localStorage.getItem("user");
+    // Datos simulados
+    const mockUser: User = {
+        name: "Juan Pérez",
+        image: "https://i.pravatar.cc/150", // Imagen de perfil simulada
+        coins: 120,
+        avatar: "https://e7.pngegg.com/pngimages/804/102/png-clipart-computer-icons-ghost-icon-fictional-character-black.png", // Simulated avatar
+        inventory: [], // Simulated empty inventory
+        books: [], // Simulated empty books list
+        challenges: [
+        { 
+            id: 1, 
+            title: "Reto 1",
+            id_book: 1,
+            finishDate: "2021-12-31",
+            coins: 120,
+            id_status: 1,
+        },
+        { 
+            id: 1, 
+            title: "Reto 2",
+            id_book: 1,
+            finishDate: "2021-12-31",
+            coins: 120,
+            id_status: 1,
+        },
+        { 
+            id: 1, 
+            title: "Reto 3",
+            id_book: 1,
+            finishDate: "2021-12-31",
+            coins: 120,
+            id_status: 1,
+        },
+        ],
+    };
 
-    const fetchUserData = async () => {
-        if (!token) {
-          console.error('No hay token disponible');
-          return;
-        }
-      
-        try {
-          const response = await fetch('http://localhost:4000/api/auth/me', {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-      
-          if (!response.ok) {
-            throw new Error('Error al obtener los datos del usuario');
-          }
-      
-          const userData = await response.json();
-          console.log('Datos del usuario:', userData); // Aquí obtienes nombre, monedas, etc.
-        } catch (error) {
-          console.error('Error en la solicitud:', error);
-        }
-      };
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem("user");
+            if (!token) {
+                setUser(mockUser);
+                localStorage.setItem("user", JSON.stringify(mockUser));
+                return;
+            }
 
-    const user = fetchUserData();
+            try {
+                const response = await fetch("http://localhost:4000/api/auth/me", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                });
 
-    // const handleCompleteChallenges = (challengeId: string) => {
-    //     const updatedChallenges = user.challenges.map((challenge: any) => {
-    //         if (challenge.id === challengeId) {
-    //             return {
-    //                 ...challenge,
-    //                 completed: true,
-    //             };
-    //         }
-    //         return challenge;
-    //     });
+                if (!response.ok) {
+                    throw new Error("Error al obtener los datos del usuario");
+                }
 
-    //     const updatedUser = {
-    //         ...user,
-    //         challenges: updatedChallenges,
-    //     };
+                const userData = await response.json();
+                setUser(userData);
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+            }
+        };
+        fetchUserData();
+        setUser(mockUser);
+    }, []);
 
-    //     localStorage.setItem("user", JSON.stringify(updatedUser));
-    //     navigate('/userhome');
-    // }
-
-    // const handleCancelChallenge = (challengeId: string) => {
-    //     const updatedChallenges = user.challenges.filter((challenge: any) => challenge.id !== challengeId);
-
-    //     const updatedUser = {
-    //         ...user,
-    //         challenges: updatedChallenges,
-    //     };
-
-    //     localStorage.setItem("user", JSON.stringify(updatedUser));
-    //     navigate('/userhome');
-    // }
-
-    const handleclick = () =>{
-        console.log(user)
+    if (!user) {
+        return <div>Cargando...</div>;
     }
+
     return (
         <div className="user-home">
             <Header user={user} />
-            <button onClick={handleclick}>hola</button>
-            {/* <button onClick={() => {
-                localStorage.removeItem("user"); 
-                navigate('/');
-            }}>
-                Cerrar sesión
-            </button> */}
-
-            {/* <Challenges 
-                challenges={user.challenges} 
-                onCompleteChallenge={handleCompleteChallenges}
-                onAbandonChallenge={handleCancelChallenge} /> */}
+            <main className="user-main">
+                {/* Sección izquierda - Centro de Mando */}
+                <UserDashboard user={user} />
+                
+                {/* Sección derecha - Retos y Librería */}
+                <div className="user-content">
+                    <UserSection 
+                        title="Tus Retos" 
+                        items={user.challenges.map(challenge => ({
+                            title: challenge.title,
+                            attribute1: "Libro",
+                            value1: "Por definir",
+                            attribute2: "Estado",
+                            value2: "Por definir",
+                        }))} 
+                        manageUrl="/manage-challenges" 
+                    />
+                    <UserSection 
+                        title="Librería" 
+                        items={user.books.map(book => ({
+                            title: book.title,
+                            attribute1: "Autor",
+                            value1: book.author,
+                            attribute2: "Editorial",
+                            value2: book.editorial,
+                        }))} 
+                        manageUrl="/manage-library" 
+                    />
+                </div>
+            </main>
         </div>
-    )
+    );
 }

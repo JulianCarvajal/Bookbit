@@ -1,0 +1,50 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-bottom: 2px solid #933bc0;
+}
+
+/* Asegurar alineación correcta de imagen y nombre */
+.user-info {
+    display: flex;
+    align-items: center;  /* Mantiene todo alineado en la misma fila */
+    gap: 15px;
+}
+
+/* Imagen redonda con ajuste de tamaño */
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #ad49e1;
+    object-fit: cover;  /* Evita distorsión en imágenes */
+    display: block;
+}
+
+.user-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ad49e1;
+    margin: 0;  /* Evita que el h1 agregue márgenes extra */
+}
+
+/* Asegurar alineación correcta de monedas */
+.user-coins {
+    display: flex;
+    align-items: center; /* Alinea verticalmente icono y texto */
+    gap: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffc107;
+}
+
+/* Ajuste de tamaño del ícono */
+.coin-icon {
+    color: #ffc107;
+    display: flex;  /* Asegura que el icono no tenga espacio no deseado */
+    align-items: center;
+}

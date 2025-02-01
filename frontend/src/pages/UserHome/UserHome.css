@@ -1,0 +1,14 @@
+.user-home {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: linear-gradient(to right bottom, #000000, #15010a, #1f0315, #26041f, #2c052b, #38093c, #420e4f, #4b1664, #622281, #7a2ea0, #933bc0, #ad49e1);
+    color: white;
+}
+  
+.user-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
