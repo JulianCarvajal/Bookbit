@@ -27,7 +27,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   const handleLoginSuccess = (token: string) => {
     console.log("Login exitoso, token recibido:", token);
     // Aquí podrías guardar el token, redirigir al usuario o hacer una petición al backend
-    localStorage.setItem("googleToken", token); // Ejemplo de cómo almacenar el token
+    localStorage.setItem("user", token); // Ejemplo de cómo almacenar el token
 
     // Redirigir al home del usuario. Debería hacerse automáticamente
     navigate('/userhome');
