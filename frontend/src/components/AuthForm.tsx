@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './AuthForm.css';
 import GoogleLoginButton from './GoogleLoginButton';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthFormProps {
   title: string;
@@ -20,11 +21,16 @@ const AuthForm: React.FC<AuthFormProps> = ({
   linkPath,
   linkDescription,
 }) => {
+
+  const navigate = useNavigate();
+
   const handleLoginSuccess = (token: string) => {
     console.log("Login exitoso, token recibido:", token);
     // Aquí podrías guardar el token, redirigir al usuario o hacer una petición al backend
     localStorage.setItem("googleToken", token); // Ejemplo de cómo almacenar el token
-    // También puedes redirigir al usuario
+
+    // Redirigir al home del usuario. Debería hacerse automáticamente
+    navigate('/userhome');
     // window.location.href = '/home'; // O usar React Router para redirigir
   };
 
