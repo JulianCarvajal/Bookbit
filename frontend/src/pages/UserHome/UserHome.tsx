@@ -48,34 +48,6 @@ export default function UserHome() {
     };
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const token = localStorage.getItem("user");
-            if (!token) {
-                setUser(mockUser);
-                localStorage.setItem("user", JSON.stringify(mockUser));
-                return;
-            }
-
-            try {
-                const response = await fetch("https://bookbitback-production.up.railway.app/api/auth/me", {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error("Error al obtener los datos del usuario");
-                }
-
-                const userData = await response.json();
-                setUser(userData);
-            } catch (error) {
-                console.error("Error en la solicitud:", error);
-            }
-        };
-        fetchUserData();
         setUser(mockUser);
     }, []);
 
