@@ -13,6 +13,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    const token = localStorage.getItem('auth-token');
+    if (token) {
+      fetchUserData(token);
+    }
+  }, []);
+
+  useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
@@ -25,13 +32,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserData = async (token: string) => {
     try {
       const res = await fetch('https://bookbitback-production.up.railway.app/auth/me', {
+        method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      if (!res.ok) {
+        console.error('Token inválido, cerrando sesión...');
+        logout(); // Si el token es inválido, cerrar sesión
+        return;
+      }
+
       const data = await res.json();
       setUser(data);
       localStorage.setItem('user', JSON.stringify(data));
     } catch (error) {
       console.error('Error obteniendo datos del usuario:', error);
+      logout();
     }
   };
 
