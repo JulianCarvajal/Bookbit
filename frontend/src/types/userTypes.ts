@@ -9,6 +9,13 @@ export interface User {
     books: Book[];  
 }
 
+export interface AuthState {
+    user: User | null;
+    token: string | null;
+    isAuthenticated: boolean;
+    isLoading: boolean;
+}
+
 export interface Challenge {
     id: number;
     title: string;

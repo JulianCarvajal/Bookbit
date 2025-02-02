@@ -6,7 +6,6 @@ export default function Register() {
     <AuthForm
       title="Crea tu cuenta ahora!"
       message="¡Únete a nosotros y lleva tus hábitos de lectura al siguiente nivel!"
-      buttonText="Crear cuenta con Google"
       linkText="Inicia sesión"
       linkPath="/login"
       linkDescription="¿Ya tienes una cuenta?"

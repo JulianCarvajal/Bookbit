@@ -7,7 +7,6 @@ export default function Login() {
     <AuthForm
       title="Inicia sesión"
       message="Accede con tu cuenta de Google para continuar"
-      buttonText="Iniciar sesión con Google"
       linkText="Regístrate"
       linkPath="/register"
       linkDescription="¿No tienes cuenta?"

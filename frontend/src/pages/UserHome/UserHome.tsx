@@ -55,7 +55,7 @@ export default function UserHome() {
             }
 
             try {
-                const response = await fetch("http://localhost:4000/api/auth/me", {
+                const response = await fetch("https://bookbitback-production.up.railway.app/api/auth/me", {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${token}`,
