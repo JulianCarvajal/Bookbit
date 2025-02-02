@@ -17,7 +17,7 @@ export default function UserDashboard({ user }: Props) {
     
           {/* Inventario */}
           <div className="inventory-grid">
-            {user.inventory.map((item) => (
+            {user.inventory && user.inventory.map((item) => (
               <div key={item.id} className="inventory-slot">
                 <img src={item.image} alt={item.name} className="inventory-item" />
                 <span className="item-tooltip">{item.name}</span>

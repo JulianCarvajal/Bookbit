@@ -33,13 +33,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!res.ok) {
         console.error('Token inválido, cerrando sesión...');
-        logout(); // Si el token es inválido, cerrar sesión
+        logout();
         return;
       }
 
       const data = await res.json();
       setUser(data);
       localStorage.setItem('user', JSON.stringify(data));
+      console.log('Datos del usuario:', data);
     } catch (error) {
       console.error('Error obteniendo datos del usuario:', error);
       logout();

@@ -2,10 +2,10 @@ export interface User {
     name: string;
     image: string;
     coins: number;
-    challenges: Challenge[];  
-    avatar: string;  
+    challenges?: Challenge[];  
+    avatar?: string;  
     pet?: string;  
-    inventory: InventoryItem[];  
+    inventory?: InventoryItem[];  
     books: Book[];  
 }
 
@@ -34,7 +34,10 @@ export interface InventoryItem {
 
 export interface Book {
     id: string;
-    title: string;
+    name: string;
     author: string;
     editorial: string;
+    pages: number;
+    chapters: number;
+    publication_date: string;
 }

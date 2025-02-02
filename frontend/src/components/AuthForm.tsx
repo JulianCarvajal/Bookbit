@@ -35,8 +35,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
       if (!res.ok) throw new Error('Error en la autenticación');
 
-      const { jwt } = await res.json();
-      authContext?.login(jwt);
+      const { token } = await res.json();
+      authContext?.login(token);
       navigate('/userhome');
     } catch (error) {
       console.error('Error al autenticar el usuario', error);
