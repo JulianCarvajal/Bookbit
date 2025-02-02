@@ -2,8 +2,6 @@ import React from 'react';
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Home from "./pages/Home/Home";
@@ -17,35 +15,29 @@ function App() {
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <AuthProvider>
-        <Routes>
-          {/* Rutas públicas */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          
-          {/* Rutas protegidas */}
-          <Route 
-            path="/books" 
-            element={
-              <ProtectedRoute>
-                <BookList />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/userhome" 
-            element={
-              <ProtectedRoute>
-                <UserHome />
-              </ProtectedRoute>
-            } 
-          />
+      <Routes>
+        {/* Rutas públicas */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        
+        {/* Rutas protegidas */}
+        <Route 
+          path="/books" 
+          element={
+            <BookList />
+          } 
+        />
+        <Route 
+          path="/userhome" 
+          element={
+            <UserHome />
+          } 
+        />
 
-          {/* Ruta para manejar URLs no encontradas */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </AuthProvider>
+        {/* Ruta para manejar URLs no encontradas */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </GoogleOAuthProvider>
   );
 }

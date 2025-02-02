@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./UserHome.css";
 import { Header } from "../../components/Header";
 import UserSection from "../../components/UserSection";
 import UserDashboard from "../../components/UserDashboard";
 import { User } from "../../types/userTypes";
+import { AuthContext } from '../../context/AuthContext';
 
 export default function UserHome() {
     const [user, setUser] = useState<User | null>(null);
+    const authContext = useContext(AuthContext);
 
     // Datos simulados
     const mockUser: User = {
@@ -114,6 +116,7 @@ export default function UserHome() {
                     />
                 </div>
             </main>
+            <p>Bienvenido {authContext?.user?.name}</p>
         </div>
     );
 }

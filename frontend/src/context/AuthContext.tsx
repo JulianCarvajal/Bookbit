@@ -1,79 +1,49 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { AuthState, User } from '../types/userTypes';
+import React, { createContext, useState, useEffect } from 'react';
+import { User } from '../types/userTypes';
 
-interface AuthContextType extends AuthState {
-  login: (token: string) => Promise<void>;
+interface AuthContextType {
+  user: User | null;
+  login: (token: string) => void;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [authState, setAuthState] = useState<AuthState>({
-    user: null,
-    token: localStorage.getItem('auth_token'),
-    isAuthenticated: false,
-    isLoading: false
-  });
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = useCallback(async (token: string) => {
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) setUser(JSON.parse(storedUser));
+  }, []);
+
+  const login = (token: string) => {
+    localStorage.setItem('auth-token', token);
+    fetchUserData(token);
+  };
+
+  const fetchUserData = async (token: string) => {
     try {
-      setAuthState(prev => ({ ...prev, isLoading: true }));
-      
-      // Guardar token
-      localStorage.setItem('auth_token', token);
-      
-      // Decodificar token o hacer una llamada al backend para obtener datos del usuario
-      const userResponse = await fetch('https://bookbitback-production.up.railway.app/auth/me', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const res = await fetch('https://bookbitback-production.up.railway.app/auth/me', {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
-      if (!userResponse.ok) throw new Error('Failed to get user data');
-      
-      const userData: User = await userResponse.json();
-      
-      setAuthState({
-        user: userData,
-        token,
-        isAuthenticated: true,
-        isLoading: false
-      });
+      const data = await res.json();
+      setUser(data);
+      localStorage.setItem('user', JSON.stringify(data));
     } catch (error) {
-      console.error('Auth error:', error);
-      localStorage.removeItem('auth_token');
-      setAuthState({
-        user: null,
-        token: null,
-        isAuthenticated: false,
-        isLoading: false
-      });
-      throw error;
+      console.error('Error obteniendo datos del usuario:', error);
     }
-  }, []);
+  };
 
-  const logout = useCallback(() => {
-    localStorage.removeItem('auth_token');
-    setAuthState({
-      user: null,
-      token: null,
-      isAuthenticated: false,
-      isLoading: false
-    });
-  }, []);
+  const logout = () => {
+    localStorage.removeItem('auth-token');
+    localStorage.removeItem('user');
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ ...authState, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
 };
