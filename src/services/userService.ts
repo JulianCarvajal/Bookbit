@@ -1,25 +1,26 @@
 const API_URL = "https://bookbitback-production.up.railway.app";
 
+// Función para obtener el token del usuario logueado
 const getAuthToken = () => {
-    return localStorage.getItem("auth-token") || "";
+  return localStorage.getItem("auth-token") || "";
 };
 
-// Obtiene los items de la tienda
-export const getItems = async () => {
+// Obtiene todos los items del usuario
+export const getUserItems = async () => {
     try {
         const token = getAuthToken();
         if (!token) throw new Error("Usuario no autenticado");
-
-        const response = await fetch(`${API_URL}/item`, {
+    
+        const response = await fetch(`${API_URL}/inventory`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         }
         });
-
-        if (!response.ok) throw new Error("Error al obtener los items de la tienda");
-
+    
+        if (!response.ok) throw new Error("Error al obtener los items del usuario");
+    
         return await response.json();
     } catch (error) {
         console.error(error);
@@ -27,22 +28,22 @@ export const getItems = async () => {
     }
 };
 
-// Compra un item
-export const buyItem = async (itemId: number) => {
+// Servicio para modificar el avatar del usuario
+export const modifyAvatar = async (avatarId: number) => {
     try {
         const token = getAuthToken();
         if (!token) throw new Error("Usuario no autenticado");
-
-        const response = await fetch(`${API_URL}/inventory/buy/${itemId}`, {
-        method: "POST",
+    
+        const response = await fetch(`${API_URL}/user/${avatarId}`, {
+        method: "PATCH",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
         }
         });
-
-        if (!response.ok) throw new Error("Error al comprar el item");
-
+    
+        if (!response.ok) throw new Error("Error al modificar el avatar");
+    
         return await response.json();
     } catch (error) {
         console.error(error);

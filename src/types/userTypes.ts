@@ -4,7 +4,7 @@ export interface User {
     image: string;
     coins: number;
     challenges?: Challenge[];  
-    avatar?: string;  
+    currentAvatar?: string;  
     pet?: string;  
     inventory?: Item[];  
     books: Book[];  

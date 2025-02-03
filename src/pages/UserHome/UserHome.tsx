@@ -5,13 +5,16 @@ import { Header } from "../../components/Header";
 import UserSection from "../../components/UserSection";
 import UserDashboard from "../../components/UserDashboard";
 import { getUserChallenges } from "../../services/challengesService";
+import { getUserItems, modifyAvatar } from "../../services/userService";
 import { AuthContext } from '../../context/AuthContext';
-import { Challenge } from "../../types/userTypes";
+import { Challenge, Item, User } from "../../types/userTypes";
 
 export default function UserHome() {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
     const [challenges, setChallenges] = useState<Challenge[]>([]);
+    const [avatars, setAvatars] = useState<Item[]>([]);
+    const [currentAvatar, setCurrentAvatar] = useState<Item>();
 
     useEffect(() => {
         updateChallenges();
@@ -28,6 +31,15 @@ export default function UserHome() {
             console.error("Error fetching challenges:", error);
         }
     };
+
+    // const handleChangeAvatar = async (avatar: Item) => {
+    //     try {
+    //         const items = await getUserItems();
+    //         const avatars: Item[] = items.filter((item: Item) => item.category.name === "avatar");
+    //     } catch (error) {
+    //         console.error("Error changing avatar:", error);
+    //     }
+    // };
 
     if (!user) {
         return <div>Cargando...</div>;
