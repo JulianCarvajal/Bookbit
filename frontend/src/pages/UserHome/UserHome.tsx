@@ -4,16 +4,11 @@ import "./UserHome.css";
 import { Header } from "../../components/Header";
 import UserSection from "../../components/UserSection";
 import UserDashboard from "../../components/UserDashboard";
-import { User } from "../../types/userTypes";
 import { AuthContext } from '../../context/AuthContext';
 
 export default function UserHome() {
-    const [user, setUser] = useState<User | null>(null);
     const authContext = useContext(AuthContext);
-
-    useEffect(() => {
-        setUser(authContext?.user || null);
-    }, []);
+    const user = authContext?.user;
 
     if (!user) {
         return <div>Cargando...</div>;
@@ -28,7 +23,7 @@ export default function UserHome() {
                 
                 {/* Sección derecha - Retos y Librería */}
                 <div className="user-content">
-                    {/* <UserSection 
+                    <UserSection 
                         title="Tus Retos" 
                         items={user.challenges?.map(challenge => ({
                             title: challenge.title,
@@ -48,8 +43,8 @@ export default function UserHome() {
                             attribute2: "Editorial",
                             value2: book.editorial,
                         }))} 
-                        manageUrl="/manage-library" 
-                    /> */}
+                        manageUrl="/userbooks" 
+                    />
                 </div>
             </main>
             <p>Bienvenido {authContext?.user?.name}</p>

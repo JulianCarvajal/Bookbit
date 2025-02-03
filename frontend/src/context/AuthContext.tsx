@@ -19,6 +19,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  // Nuevo useEffect para depurar cambios en `user`
+  useEffect(() => {
+    console.log("Usuario actualizado en AuthContext:", user);
+  }, [user]);
+
   const login = (token: string) => {
     localStorage.setItem('auth-token', token);
     fetchUserData(token);
@@ -38,9 +43,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const data = await res.json();
-      setUser(data);
+      console.log("Datos completos recibidos del backend:", data);
+      const userData = data.response;
+
+      setUser(userData);
       localStorage.setItem('user', JSON.stringify(data));
-      console.log('Datos del usuario:', data);
     } catch (error) {
       console.error('Error obteniendo datos del usuario:', error);
       logout();
