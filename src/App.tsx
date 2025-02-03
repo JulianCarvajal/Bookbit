@@ -11,6 +11,7 @@ import UserHome from './pages/UserHome/UserHome';
 import UserBooks from './pages/UserBooks/UserBooks';
 import Library from './pages/Library/Library';
 import Store from './pages/Store/Store';
+import UserChallenges from './pages/UserChallanges/UserChallanges';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
       <Route path="/userhome" element={<UserHome />} />
       <Route path="/userbooks" element={<UserBooks />} />
       <Route path="/store" element={<Store />} />
+      <Route path="/userchallenges" element={<UserChallenges />} />
 
       {/* Ruta para manejar URLs no encontradas */}
       <Route path="*" element={<Navigate to="/" replace />} />

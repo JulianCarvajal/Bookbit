@@ -3,12 +3,14 @@ import { AuthContext } from "../../context/AuthContext";
 import { Header } from "../../components/Header";
 import BookCard from "../../components/BookCard";
 import "./Library.css";
+import { useNavigate } from "react-router-dom";
 import { Book } from "../../types/userTypes";
 import { getAllBooks, addUserBook } from "../../services/bookService";
 
 const Library: React.FC = () => {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
+    const navigate = useNavigate();
     const [books, setBooks] = useState<Book[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -113,6 +115,12 @@ const Library: React.FC = () => {
                             <p className="no-books">No hay libros disponibles en este momento.</p>
                         )}
                     </div>
+                    <button 
+                        className="add-books-button" 
+                        onClick={() => navigate("/userbooks")}
+                    >
+                        Vuelve a tus libros
+                    </button>
                 </div>
             </div>
         </div>

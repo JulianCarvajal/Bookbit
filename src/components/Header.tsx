@@ -27,8 +27,9 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
       <div className="navbar">
         <a href="/userhome" className="nav-link">Inicio</a>
         <a href="/userbooks" className="nav-link">Mis libros</a>
+        <a href="/userchallenges" className="nav-link">Mis retos</a>
         <a href="/store" className="nav-link">Tienda</a>
-        <a href="/library" className="nav-link">Librería</a>
+        <a href="/library" className="nav-link">Biblioteca</a>
       </div>
 
       {/* Sección de monedas */}

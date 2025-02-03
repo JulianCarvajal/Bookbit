@@ -32,7 +32,7 @@ export default function UserHome() {
                             attribute2: "Estado",
                             value2: "Por definir",
                         })) || []} 
-                        manageUrl="/manage-challenges" 
+                        manageUrl="/userchallenges" 
                     />
                     <UserSection 
                         title="Tu biblioteca" 

@@ -3,12 +3,14 @@ import { AuthContext } from "../../context/AuthContext";
 import { Header } from "../../components/Header";
 import StoreItemCard from "../../components/StoreItemCard";
 import "./Store.css";
+import { useNavigate } from "react-router-dom";
 import { Item } from "../../types/userTypes";
 import { getItems} from "../../services/itemsService";
 
 const Store: React.FC = () => {
   const authContext = useContext(AuthContext);
   const user = authContext?.user;
+  const navigate = useNavigate();
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
@@ -43,6 +45,12 @@ const Store: React.FC = () => {
                         <p className="no-items">Otra vez se cayó producción :c</p>
                     )}
                 </div>
+                <button 
+                        className="add-books-button" 
+                        onClick={() => navigate("/userhome")}
+                    >
+                        Ir al perfil
+                    </button>
             </div>
         </div>
     </div>

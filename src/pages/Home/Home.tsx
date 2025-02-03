@@ -7,13 +7,9 @@ export default function Home() {
     <div className="home">
     <header className="header">
       <img src="/assets/logo.png" alt="Logo" className="logo" />
-      <nav>
-        <ul>
-          <li><a href="#about">Acerca de</a></li>
-          <li><a href="#features">Características</a></li>
-          <li><a href="#contact">Profe ponganos 5</a></li>
-        </ul>
-      </nav>
+      <div className="intro">
+        Profe vea pues este proyecto tan chimba
+      </div>
       <div className="auth-buttons">
         <Link to="/login"><button>Iniciar Sesión</button></Link>
         <Link to="/register"><button>Registrarse</button></Link>

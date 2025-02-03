@@ -6,6 +6,7 @@ interface Book {
   author: string;
   pages: number;
   chapters: number;
+  editorial: string;
   publicationDate: string;
 }
 
@@ -20,6 +21,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onClose, onAddBook }) => {
     author: '',
     pages: 0,
     chapters: 0,
+    editorial: '',
     publicationDate: '',
   });
 
@@ -46,6 +48,7 @@ const AddBookForm: React.FC<AddBookFormProps> = ({ onClose, onAddBook }) => {
           <input type="text" name="author" placeholder="Autor" required onChange={handleChange} />
           <input type="number" name="pages" placeholder="Páginas" required onChange={handleChange} />
           <input type="number" name="chapters" placeholder="Capítulos" onChange={handleChange} />
+          <input type="text" name="editorial" placeholder="Editorial" onChange={handleChange} />
           <input type="text" name="publicationDate" placeholder="Fecha de publicación dd-mm-aaaa" required onChange={handleChange} />
           <button type="submit">Añadir Libro</button>
           <button type="button" onClick={onClose}>Cancelar</button>

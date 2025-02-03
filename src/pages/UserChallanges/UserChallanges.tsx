@@ -1,73 +1,141 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { Header } from "../../components/Header";
+import ChallengeCard from "../../components/ChallengeCard";
+import CreateChallengeModal from "../../components/CreateChallengeModal";
 import "./UserChallenges.css";
-import { Challenge } from "../../types/userTypes";
-// import ChallengeCard from "../components/ChallengeCard";
+import { useNavigate } from "react-router-dom";
+import { Challenge, Book } from "../../types/userTypes";
+import { getUserChallenges, addChallenges, completeChallenge } from "../../services/challengesService";
 
-interface UserChallengesProps {
-    challenges: Challenge[];
-}
+const UserChallenges: React.FC = () => {
+    const authContext = useContext(AuthContext);
+    const user = authContext?.user;
+    const navigate = useNavigate();
+    const [challenges, setChallenges] = useState<Challenge[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-export default function UserChallenges({ challenges }: UserChallengesProps) {
-    // Filtrar retos activos y completados
-    const activeChallenges = challenges.filter(challenge => challenge.id_status === 1);
-    const completedChallenges = challenges.filter(challenge => challenge.id_status === 2);
+    useEffect(() => {
+        updateChallenges();
+    }, []);
 
-    // Función para eliminar un reto
-    const handleDeleteChallenge = (id: number) => {
-        console.log("Eliminar reto con ID:", id);
-        // Aquí se puede implementar la lógica para eliminar el reto del estado/backend
+    const updateChallenges = async () => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            const challengeData = await getUserChallenges();
+            setChallenges(challengeData);
+        } catch (error) {
+            setError("Error al cargar los retos. Por favor, intenta de nuevo.");
+            console.error("Error fetching challenges:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    return (
-        <div className="user-challenges">
-            <h1 className="title">Gestión de Retos</h1>
-            
-            <section className="active-challenges">
-                <h2>Retos Activos</h2>
-                <div className="challenges-container">
-                    {/* {activeChallenges.map((challenge) => (
-                        <ChallengeCard 
-                            key={challenge.id} 
-                            challenge={challenge} 
-                            onDelete={() => handleDeleteChallenge(challenge.id)}
-                        />
-                    ))} */}
-                </div>
-            </section>
-            
-            <section className="completed-challenges">
-                <h2>Retos Completados</h2>
-                <div className="completed-container">
-                    {completedChallenges.map((challenge) => (
-                        <div key={challenge.id} className="completed-challenge">
-                            {challenge.title}
-                        </div>
-                    ))}
-                </div>
-            </section>
+    const handleCreateChallenge = async (challengeToAdd: {
+        title: string;
+        book: Book;
+        pages: number;
+        deathLine: number;
+      }) => {
+        try {
+            setError(null);
+            await addChallenges( challengeToAdd.title, challengeToAdd.book, challengeToAdd.pages, challengeToAdd.deathLine);
 
-            <button className="create-challenge-button">Crear Nuevo Reto</button>
+            updateChallenges();
+            setSuccessMessage(`"${challengeToAdd.title}" se ha creado con éxito`);
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+            
+        } catch (error) {
+            setError("Error al agregar el reto. Por favor, intenta de nuevo.");
+            console.error("Error al agregar el reto:", error);
+        } finally {
+            setIsModalOpen(false);
+        }
+    };
+
+    const handleCompleteChallenge = async (challengeToComplete: Challenge) => {
+        try {
+            setError(null);
+            await completeChallenge(challengeToComplete.id);
+            setChallenges(prevChallenges => 
+                prevChallenges.filter(challenge => challenge.id !== challengeToComplete.id)
+            );
+            setSuccessMessage(`"${challengeToComplete.title}" se ha completado con éxito`);
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+            
+        } catch (error) {
+            setError("Error al completar el reto. Por favor, intenta de nuevo.");
+            console.error("Error al completar el reto:", error);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="challenge-page">
+                {user && <Header user={user} />}
+                <div className="challenge-container">
+                    <p>Cargando retos...</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="challenge-page">
+            {user && <Header user={user} />}
+            <div className="challenges-container">
+                <div className="content">
+                    <h2 className="challenge-title">Tus retos</h2>
+                    
+                    {successMessage && <div className="success-message">{successMessage}</div>}
+                    {error && <div className="error-message">{error}</div>}
+
+                    <div className="challenges-grid">
+                        {challenges.length > 0 ? (
+                            challenges.map(challenge => (
+                                <ChallengeCard 
+                                    key={challenge.id} 
+                                    challenge={challenge}
+                                    onComplete={handleCompleteChallenge}
+                                    onDelete={handleCompleteChallenge}
+                                />
+                            ))
+                        ) : (
+                            <p className="no-challenges">No tienes retos. ¡Crea uno ahora!</p>
+                        )}
+                    </div>
+
+                    <button className="create-challenge-button" onClick={() => setIsModalOpen(true)}>
+                        {challenges.length > 0 ? "Crear un nuevo reto" : "Crea tu primer reto"}
+                    </button>
+                </div>
+            </div>
+
+            <button 
+                className="add-books-button" 
+                onClick={() => navigate("/userhome")}
+            >
+                Vuelve a tu perfil
+            </button>
+
+            {isModalOpen && (
+                <CreateChallengeModal 
+                    books={user?.books || []}
+                    onClose={() => setIsModalOpen(false)} 
+                    onCreate={handleCreateChallenge}
+                />
+            )}
         </div>
     );
 };
-// Recuperar el usuario.
-// const updateUserChallenges = (updatedChallenges: any[]) => {
-    //     if (!user) return;
-    //     const updatedUser = { ...user, challenges: updatedChallenges };
-    //     setUser(updatedUser);
-    //     localStorage.setItem("user", JSON.stringify(updatedUser));
-    // };
 
-    // const handleCompleteChallenges = (challengeId: string) => {
-    //     if (!user) return;
-    //     const updatedChallenges = user.challenges.map((challenge) =>
-    //         challenge.id === challengeId ? { ...challenge, completed: true } : challenge
-    //     );
-    //     updateUserChallenges(updatedChallenges);
-    // };
-
-    // const handleCancelChallenge = (challengeId: string) => {
-    //     if (!user) return;
-    //     const updatedChallenges = user.challenges.filter((challenge) => challenge.id !== challengeId);
-    //     updateUserChallenges(updatedChallenges);
-    // };
+export default UserChallenges;

@@ -8,6 +8,7 @@ interface Book {
   author: string;
   pages: number;
   chapters?: number;
+  editorial: string;
   publicationDate: string;
 }
 
@@ -94,6 +95,7 @@ const BooksList: React.FC = () => {
               <p><strong>Autor:</strong> {book.author}</p>
               <p><strong>Páginas:</strong> {book.pages}</p>
               {book.chapters && <p><strong>Capítulos:</strong> {book.chapters}</p>}
+              <p><strong>Editorial:</strong> {book.editorial}</p>
               <p><strong>Fecha de Publicación:</strong> {book.publicationDate}</p>
               <div className="book-actions">
                 <button className="modify-button">Modificar</button>
