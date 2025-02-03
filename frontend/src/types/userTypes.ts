@@ -6,7 +6,7 @@ export interface User {
     challenges?: Challenge[];  
     avatar?: string;  
     pet?: string;  
-    inventory?: InventoryItem[];  
+    inventory?: Item[];  
     books: Book[];  
 }
 
@@ -26,15 +26,16 @@ export interface Challenge {
     id_status: number;
 }
 
-export interface InventoryItem {
-    id: string;
+export interface Item {
+    id: number;
     name: string;
     image: string;
-    type: "weapon" | "armor" | "food" | "misc";
+    category: string;
+    price: number;
 }
 
 export interface Book {
-    id: string;
+    id: number;
     name: string;
     author: string;
     editorial: string;

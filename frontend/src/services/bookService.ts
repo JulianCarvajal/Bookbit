@@ -5,9 +5,7 @@ const getAuthToken = () => {
   return localStorage.getItem("auth-token") || "";
 };
 
-
 // Obtiene los libros de la biblioteca del usuario logueado.
-
 export const getUserBooks = async () => {
   try {
     const token = getAuthToken();
@@ -33,26 +31,25 @@ export const getUserBooks = async () => {
 // Obtiene todos los libros de la biblioteca general.
 
 export const getAllBooks = async () => {
-    console.log(API_URL);
-    try {
-        const response = await fetch(`${API_URL}/books`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json"
-        }
-        });
+  try {
+      const response = await fetch(`${API_URL}/books`, {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json"
+      }
+      });
 
-        if (!response.ok) throw new Error("Error al obtener la biblioteca general");
+      if (!response.ok) throw new Error("Error al obtener la biblioteca general");
 
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
+      return await response.json();
+  } catch (error) {
+      console.error(error);
+      return [];
+  }
 };
 
 // Permite que el usuario agregue un libro de la biblioteca general a su biblioteca personal.
-export const addUserBook = async (bookId: string) => {
+export const addUserBook = async (bookId: number) => {
   try {
     const token = getAuthToken();
     if (!token) throw new Error("Usuario no autenticado");
@@ -76,7 +73,7 @@ export const addUserBook = async (bookId: string) => {
 };
 
 // Permite que el usuario elimine un libro de su biblioteca personal.
-export const deleteUserBook = async (bookId: string) => {
+export const deleteUserBook = async (bookId: number) => {
   try {
     const token = getAuthToken();
     if (!token) throw new Error("Usuario no autenticado");
@@ -89,9 +86,16 @@ export const deleteUserBook = async (bookId: string) => {
       }
     });
 
+    console.log('Status:', response.status);
+    console.log('Response:', response);
+
     if (!response.ok) throw new Error("Error al eliminar el libro");
 
-    return await response.json();
+    if (response.status !== 204) {
+      return await response.json();
+    }
+    
+    return { success: true };
   } catch (error) {
     console.error(error);
     return { error: "No se pudo eliminar el libro" };

@@ -23,6 +23,14 @@ export const Header: React.FC<HeaderProps> = ({ user }) => {
         <h1 className="user-name">{user.name}</h1>
       </div>
 
+      {/* Barra de navegación */}
+      <div className="navbar">
+        <a href="/userhome" className="nav-link">Inicio</a>
+        <a href="/userbooks" className="nav-link">Mis libros</a>
+        <a href="/store" className="nav-link">Tienda</a>
+        <a href="/library" className="nav-link">Librería</a>
+      </div>
+
       {/* Sección de monedas */}
       <div className="user-coins">
         <BsCoin className="coin-icon" size={24} />

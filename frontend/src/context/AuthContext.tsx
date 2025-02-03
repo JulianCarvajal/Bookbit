@@ -19,11 +19,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  // Nuevo useEffect para depurar cambios en `user`
-  useEffect(() => {
-    console.log("Usuario actualizado en AuthContext:", user);
-  }, [user]);
-
   const login = (token: string) => {
     localStorage.setItem('auth-token', token);
     fetchUserData(token);
@@ -43,7 +38,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const data = await res.json();
-      console.log("Datos completos recibidos del backend:", data);
       const userData = data.response;
 
       setUser(userData);

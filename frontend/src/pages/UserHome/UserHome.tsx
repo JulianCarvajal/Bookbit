@@ -47,7 +47,6 @@ export default function UserHome() {
                     />
                 </div>
             </main>
-            <p>Bienvenido {authContext?.user?.name}</p>
         </div>
     );
 }
