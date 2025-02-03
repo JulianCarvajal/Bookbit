@@ -7,48 +7,116 @@ import { Book } from "../../types/userTypes";
 import { getAllBooks, addUserBook } from "../../services/bookService";
 
 const Library: React.FC = () => {
-  const authContext = useContext(AuthContext);
-  const user = authContext?.user;
-  const [books, setBooks] = useState<Book[]>([]);
+    const authContext = useContext(AuthContext);
+    const user = authContext?.user;
+    const [books, setBooks] = useState<Book[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const booksData = await getAllBooks();
-      setBooks(booksData);
+    useEffect(() => {
+        updateBooks();
+    }, []);
+
+    const updateBooks = async () => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            const booksData = await getAllBooks();
+            setBooks(booksData);
+        } catch (error) {
+            setError("Error al cargar los libros. Por favor, intenta de nuevo.");
+            console.error("Error fetching books:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    fetchBooks();
-  }, []);
+    const handleAddBook = async (bookToAdd: Book) => {
+        try {
+            setError(null);
+            await addUserBook(bookToAdd.id);
+            
+            // Actualizar el estado local removiendo el libro agregado
+            setBooks(currentBooks => 
+                currentBooks.filter(book => book.id !== bookToAdd.id)
+            );
+            
+            // Mostrar mensaje de éxito
+            setSuccessMessage(`"${bookToAdd.name}" se ha agregado a tu biblioteca`);
+            
+            // Ocultar el mensaje después de 3 segundos
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+            
+        } catch (error) {
+            setError("Error al agregar el libro. Por favor, intenta de nuevo.");
+            console.error("Error al agregar el libro:", error);
+        }
+    };
 
-  const handleAddBook = (book: Book) => {
-    addUserBook(book.id);
-  };
+    if (isLoading) {
+        return (
+            <div className="library-page">
+                {user && <Header user={user} />}
+                <div className="library-container">
+                    <p>Cargando libros...</p>
+                </div>
+            </div>
+        );
+    }
 
-  return (
-    // Library.tsx
-    <div className="library-page">
-        {user && <Header user={user} />}
-        <div className="library-container">
-            <div className="content">
-                <h2 className="library-title">Conoce todos nuestros libros</h2>
-                <div className="books-grid">
-                    {books.length > 0 ? (
-                        books.map((book) => (
-                            <BookCard 
-                                key={book.id} 
-                                book={book} 
-                                buttonText="Agregar" 
-                                onButtonClick={handleAddBook} 
-                            />
-                        ))
-                    ) : (
-                        <p className="no-books">Nos hackearon wey, borraron todos los libros.</p>
+    return (
+        <div className="library-page">
+            {user && <Header user={user} />}
+            <div className="library-container">
+                <div className="content">
+                    <h2 className="library-title">Conoce todos nuestros libros</h2>
+                    
+                    {/* Mensajes de éxito y error */}
+                    {successMessage && (
+                        <div className="success-message">
+                            {successMessage}
+                            <button 
+                                onClick={() => setSuccessMessage(null)} 
+                                className="close-message"
+                            >
+                                ×
+                            </button>
+                        </div>
                     )}
+                    
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                            <button 
+                                onClick={() => setError(null)} 
+                                className="close-message"
+                            >
+                                ×
+                            </button>
+                        </div>
+                    )}
+
+                    <div className="books-grid">
+                        {books.length > 0 ? (
+                            books.map((book) => (
+                                <BookCard 
+                                    key={book.id} 
+                                    book={book} 
+                                    buttonText="Agregar" 
+                                    onButtonClick={() => handleAddBook(book)} 
+                                />
+                            ))
+                        ) : (
+                            <p className="no-books">No hay libros disponibles en este momento.</p>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-  );
+    );
 };
 
 export default Library;

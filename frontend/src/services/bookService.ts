@@ -32,19 +32,23 @@ export const getUserBooks = async () => {
 
 export const getAllBooks = async () => {
   try {
-      const response = await fetch(`${API_URL}/books`, {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/json"
-      }
-      });
+    const token = getAuthToken();
+    if (!token) throw new Error("Usuario no autenticado");
 
-      if (!response.ok) throw new Error("Error al obtener la biblioteca general");
+    const response = await fetch(`${API_URL}/user-books/toAdd`, {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+    }
+    });
 
-      return await response.json();
+    if (!response.ok) throw new Error("Error al obtener la biblioteca general");
+
+    return await response.json();
   } catch (error) {
-      console.error(error);
-      return [];
+    console.error(error);
+    return [];
   }
 };
 

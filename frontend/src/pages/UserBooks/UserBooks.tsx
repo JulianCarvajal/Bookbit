@@ -1,4 +1,4 @@
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/Header";
@@ -12,34 +12,59 @@ const UserBooks: React.FC = () => {
     const user = authContext?.user;
     const navigate = useNavigate();
     const [userBooks, setUserBooks] = useState<Book[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     useEffect(() => {
         updateUserBooks();
     }, []);
 
-    useEffect(() => {
-        updateUserBooks();
-    }, [userBooks]);
-
     const updateUserBooks = async () => {
-        const booksData = await getUserBooks();
-        setUserBooks(booksData);
+        try {
+            setIsLoading(true);
+            setError(null);
+            const booksData = await getUserBooks();
+            setUserBooks(booksData);
+        } catch (error) {
+            setError("Error al cargar los libros. Por favor, intenta de nuevo.");
+            console.error("Error fetching books:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const handleDeleteBook = async (book: Book) => {
+    const handleDeleteBook = async (bookToDelete: Book) => {
         try {
-        const result = await deleteUserBook(book.id);
-        if (result.error) {
-            // Manejar el error, quizás mostrar un mensaje
-            console.error(result.error);
-            return;
-        }
-        // Actualizar el estado de los libros
-        updateUserBooks();
+            await deleteUserBook(bookToDelete.id);
+            setUserBooks(currentBooks => 
+                currentBooks.filter(book => book.id !== bookToDelete.id)
+            );
+
+            // Mostrar mensaje de éxito
+            setSuccessMessage(`"${bookToDelete.name}" se ha eliminado a tu biblioteca`);
+            
+            // Ocultar el mensaje después de 3 segundos
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+
         } catch (error) {
-        console.error("Error al eliminar el libro:", error);
+            console.error("Error al eliminar el libro:", error);
+            setError("Error al eliminar el libro. Por favor, intenta de nuevo.");
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="user-books">
+                {user && <Header user={user} />}
+                <div className="user-books-container">
+                    <p>Cargando libros...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="user-books">
@@ -47,15 +72,50 @@ const UserBooks: React.FC = () => {
             <div className="user-books-container">
                 <div className="content">
                     <h2 className="user-books-title">Tus libros</h2>
-                    <div className="books-slider-container">
-                    {userBooks.length > 0 ? (
-                        userBooks.map((book) => <BookCard key={book.id} book={book} buttonText="Eliminar" onButtonClick={handleDeleteBook} />)
-                    ) : (
-                        <p className="no-books">No tienes libros en tu biblioteca.</p>
+
+                    {/* Mensajes de éxito y error */}
+                    {successMessage && (
+                        <div className="success-message">
+                            {successMessage}
+                            <button 
+                                onClick={() => setSuccessMessage(null)} 
+                                className="close-message"
+                            >
+                                ×
+                            </button>
+                        </div>
                     )}
+
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                            <button 
+                                onClick={() => setError(null)} 
+                                className="close-error"
+                            >
+                                ×
+                            </button>
+                        </div>
+                    )}
+                    <div className="books-slider-container">
+                        {userBooks.length > 0 ? (
+                            userBooks.map((book) => (
+                                <BookCard
+                                    key={book.id}
+                                    book={book}
+                                    buttonText="Eliminar"
+                                    onButtonClick={() => handleDeleteBook(book)}
+                                />
+                            ))
+                        ) : (
+                            <p className="no-books">No tienes libros en tu biblioteca.</p>
+                        )}
                     </div>
-                    <button className="add-books-button" onClick={() => navigate("/library")}>
-                    Añadir más libros
+                    <button 
+                        className="add-books-button" 
+                        onClick={() => navigate("/library")}
+                    >
+                        Añadir más libros
                     </button>
                 </div>
             </div>
