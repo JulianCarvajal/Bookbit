@@ -85,24 +85,24 @@ export const deleteUserChallenge = async (challengeId: number) => {
 };
 
 // Marcar un reto como completado
-export const completeChallenge = async (challengeId: number) => {
-    try {
-        const token = getAuthToken();
-        if (!token) throw new Error("Usuario no autenticado");
-    
-        const response = await fetch(`${API_URL}/challenges/${challengeId}/complete`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-        }
-        });
-    
-        if (!response.ok) throw new Error("Error al completar el reto");
-    
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        return { error: "No se pudo completar el reto" };
-    }
+export const completeChallenge = async (challengeId: number, userId: number) => {
+  try {
+    const token = getAuthToken();
+    if (!token) throw new Error("Usuario no autenticado");
+
+    const response = await fetch(`${API_URL}/challenges/${challengeId}/complete`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ userId })
+    });
+
+    if (!response.ok) throw new Error("Error al completar el reto");
+      return await response.json();
+  } catch (error) {
+    console.error(error);
+    return { error: "No se pudo completar el reto" };
+  }
 };

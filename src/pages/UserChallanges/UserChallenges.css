@@ -1,4 +1,4 @@
-.challenge-page {
+.challenges-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -13,25 +13,32 @@
     margin: 0 auto; /* Centra el contenedor */
 }
 
-.challenge-title {
+.challenges-wrapper {
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.challenges-title {
     font-size: 1.8rem;
     font-weight: bold;
     color: #ad49e1;
     margin-bottom: 20px;
-    padding: 0 20px; /* Agrega padding al título */
+    text-align: center;
 }
 
-.challenges-container {
+.challenges-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 20px; /* Aumenta el padding */
+    padding: 20px;
     justify-content: center; /* Centra las cards */
 }
 
 .challenge-card {
     flex: 0 0 auto;
-    width: 200px;
+    width: 250px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -39,32 +46,42 @@
     text-align: center;
 }
 
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.no-challenges {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ffffff;
 }
 
-.error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.close-message {
-    background: none;
+.challenges-create-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #ad49e1;
+    color: white;
     border: none;
-    font-size: 1.5rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
-    padding: 0 0.5rem;
+    transition: background 0.3s;
+}
+
+.challenges-create-button:hover {
+    background-color: #933bc0;
+}
+
+.go-home-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #ad49e1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.go-home-button:hover {
+    background-color: #933bc0;
 }

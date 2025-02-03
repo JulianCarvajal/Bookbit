@@ -8,7 +8,7 @@ interface StoreItemProps {
 }
 
 const StoreItemCard: React.FC<StoreItemProps> = ({ item, onBuy }) => {
-  console.log(item);
+
   return (
     <div className="store-item-card">
       <h3 className="store-item-title">{item.name}</h3>

@@ -34,12 +34,12 @@ const Store: React.FC = () => {
   };
 
   return (
-    <div className="library-page">
+    <div className="store-page">
         {user && <Header user={user} />}
-        <div className="library-container">
+        <div className="store-container">
             <div className="content">
-                <h2 className="library-title">Compra cositas lindas</h2>
-                <div className="items-grid">
+                <h2 className="store-title">Compra cositas lindas</h2>
+                <div className="store-items-grid">
                     {items.length > 0 ? (
                         items.map((item) => (
                             <StoreItemCard 
@@ -53,7 +53,7 @@ const Store: React.FC = () => {
                     )}
                 </div>
                 <button 
-                        className="add-books-button" 
+                        className="go-home-button" 
                         onClick={() => navigate("/userhome")}
                     >
                         Ir al perfil

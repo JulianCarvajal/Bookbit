@@ -1,4 +1,4 @@
-.library-page {
+.store-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -6,30 +6,30 @@
     color: white;
 }
 
-.library-container {
+.store-container {
     padding: 20px;
     width: 100%;
-    max-width: 1200px; /* Controla el ancho máximo */
-    margin: 0 auto; /* Centra el contenedor */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.library-title {
+.store-title {
     font-size: 1.8rem;
     font-weight: bold;
     color: #ad49e1;
     margin-bottom: 20px;
-    padding: 0 20px; /* Agrega padding al título */
+    text-align: center;
 }
 
-.books-container {
+.store-items-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 20px; /* Aumenta el padding */
+    padding: 20px;
     justify-content: center; /* Centra las cards */
 }
 
-.book-card {
+.store-item-card {
     flex: 0 0 auto;
     width: 200px;
     background-color: white;
@@ -37,4 +37,27 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     padding: 15px;
     text-align: center;
+}
+
+.no-items {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+.go-home-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #ad49e1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.go-home-button:hover {
+    background-color: #933bc0;
 }

@@ -50,7 +50,12 @@ export default function UserHome() {
     };
 
     if (!user) {
-        return <div>Cargando...</div>;
+        return (
+            <div className="user-home">
+                {user && <Header user={user} />}
+                <p>Cargando ...</p>
+            </div>
+        );
     }
 
     return (

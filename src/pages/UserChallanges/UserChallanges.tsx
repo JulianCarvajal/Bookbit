@@ -5,12 +5,14 @@ import ChallengeCard from "../../components/ChallengeCard";
 import CreateChallengeModal from "../../components/CreateChallengeModal";
 import "./UserChallenges.css";
 import { useNavigate } from "react-router-dom";
-import { Challenge } from "../../types/userTypes";
+import { Challenge, User } from "../../types/userTypes";
 import { getUserChallenges, addChallenges, completeChallenge } from "../../services/challengesService";
 
 const UserChallenges: React.FC = () => {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
+    const userStorage = localStorage.getItem("user");
+    const userId = userStorage ? JSON.parse(userStorage).response.id : 0;
     const navigate = useNavigate();
     const [challenges, setChallenges] = useState<Challenge[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +64,7 @@ const UserChallenges: React.FC = () => {
     const handleCompleteChallenge = async (challengeToComplete: Challenge) => {
         try {
             setError(null);
-            await completeChallenge(challengeToComplete.id);
+            await completeChallenge(challengeToComplete.id, userId);
             setChallenges(prevChallenges => 
                 prevChallenges.filter(challenge => challenge.id !== challengeToComplete.id)
             );
@@ -77,9 +79,13 @@ const UserChallenges: React.FC = () => {
         }
     };
 
+    const handleDeleteChallenge = async (challengeToDelete: Challenge) => {
+        // TODO: Implementar la lógica para eliminar un reto
+    };
+
     if (isLoading) {
         return (
-            <div className="challenge-page">
+            <div className="challenges-page">
                 {user && <Header user={user} />}
                 <div className="challenge-container">
                     <p>Cargando retos...</p>
@@ -89,11 +95,11 @@ const UserChallenges: React.FC = () => {
     }
 
     return (
-        <div className="challenge-page">
+        <div className="challenges-page">
             {user && <Header user={user} />}
-            <div className="challenges-container">
+            <div className="challenges-wrapper">
                 <div className="content">
-                    <h2 className="challenge-title">Tus retos</h2>
+                    <h2 className="challenges-title">Tus retos</h2>
                     
                     {successMessage && <div className="success-message">{successMessage}</div>}
                     {error && <div className="error-message">{error}</div>}
@@ -105,7 +111,7 @@ const UserChallenges: React.FC = () => {
                                     key={challenge.id} 
                                     challenge={challenge}
                                     onComplete={handleCompleteChallenge}
-                                    onDelete={handleCompleteChallenge}
+                                    onDelete={handleDeleteChallenge}
                                 />
                             ))
                         ) : (
@@ -113,14 +119,14 @@ const UserChallenges: React.FC = () => {
                         )}
                     </div>
 
-                    <button className="create-challenge-button" onClick={() => setIsModalOpen(true)}>
+                    <button className="challenges-create-button" onClick={() => setIsModalOpen(true)}>
                         {challenges.length > 0 ? "Crear un nuevo reto" : "Crea tu primer reto"}
                     </button>
                 </div>
             </div>
 
             <button 
-                className="add-books-button" 
+                className="go-home-button" 
                 onClick={() => navigate("/userhome")}
             >
                 Vuelve a tu perfil
