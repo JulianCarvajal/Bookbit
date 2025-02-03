@@ -18,28 +18,36 @@ export default function UserHome() {
 
     useEffect(() => {
         updateChallenges();
+        updateAvatars();
     }, []);
 
     const updateChallenges = async () => {
         try {
             const challengeData = await getUserChallenges();
-            const activeChallenges: Challenge[] = challengeData.filter(
-                (challenge: Challenge) => challenge.state.name !== 'completado'
-            );
-            setChallenges(activeChallenges);
+            setChallenges(challengeData);
         } catch (error) {
             console.error("Error fetching challenges:", error);
         }
     };
 
-    // const handleChangeAvatar = async (avatar: Item) => {
-    //     try {
-    //         const items = await getUserItems();
-    //         const avatars: Item[] = items.filter((item: Item) => item.category.name === "avatar");
-    //     } catch (error) {
-    //         console.error("Error changing avatar:", error);
-    //     }
-    // };
+    const updateAvatars = async () => {
+        try {
+            const items = await getUserItems();
+            const avatars: Item[] = items.filter((item: Item) => item.category.name === "avatar");
+            setAvatars(avatars);
+        } catch (error) {
+            console.error("Error fetching avatars:", error);
+        }
+    };
+
+    const handleChangeAvatar = async (avatar: Item) => {
+        try {
+            await modifyAvatar(avatar.id);
+            setCurrentAvatar(avatar);
+        } catch (error) {
+            console.error("Error changing avatar:", error);
+        }
+    };
 
     if (!user) {
         return <div>Cargando...</div>;
@@ -50,7 +58,12 @@ export default function UserHome() {
             <Header user={user} />
             <main className="user-main">
                 {/* Sección izquierda - Centro de Mando */}
-                <UserDashboard user={user} />
+                <UserDashboard 
+                    user={user} 
+                    avatars={avatars}
+                    currentAvatar={currentAvatar}
+                    onChangeAvatar={handleChangeAvatar} 
+                />
                 
                 {/* Sección derecha - Retos y Librería */}
                 <div className="user-content">
@@ -58,8 +71,8 @@ export default function UserHome() {
                         title="Tus Retos" 
                         items={challenges.map(challenge => ({
                             title: challenge.name,
-                            attribute1: "Libro",
-                            value1: "challenge.book.name",
+                            attribute1: "Recompensa",
+                            value1: challenge.reward.toString(),
                             attribute2: "Estado",
                             value2: challenge.state.name,
                         })) || []} 

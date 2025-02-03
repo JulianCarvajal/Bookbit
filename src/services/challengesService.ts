@@ -31,7 +31,7 @@ export const getUserChallenges = async () => {
 };
 
 // Permite que el usuario agregue un reto
-export const addChallenges = async ( name: string, book: Book, pages: number, deathLine: number) => {
+export const addChallenges = async ( name: string, pages: number, deadLine: number) => {
   try {
     const token = getAuthToken();
     if (!token) throw new Error("Usuario no autenticado");
@@ -42,7 +42,7 @@ export const addChallenges = async ( name: string, book: Book, pages: number, de
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ name, book, pages, deathLine })
+      body: JSON.stringify({ name, pages, deadLine })
     });
 
     if (!response.ok) throw new Error("Error al agregar el libro");

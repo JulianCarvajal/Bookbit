@@ -1,15 +1,15 @@
 import React from "react";
 import "./UserDashboard.css";
 import { User, Item } from "../types/userTypes";
-import { getUserItems, modifyAvatar } from "../services/userService";
 
 interface Props {
   user: User;
-  // onChangeAvatar: (avatar: Item) => void; 
+  avatars: Item[];
+  currentAvatar: Item | undefined;
+  onChangeAvatar: (avatar: Item) => void; 
 }
 
-export default function UserDashboard({ user }: Props) {
-  const avatars = user.inventory ? user.inventory.filter(item => item.category.name === "avatar") : [];
+export default function UserDashboard({ user, avatars, currentAvatar, onChangeAvatar }: Props) {
 
   return (
       <section className="user-dashboard">
@@ -24,21 +24,21 @@ export default function UserDashboard({ user }: Props) {
         </div>
 
         {/* Botón para cambiar avatar */}
-        {/* <button className="change-avatar-button">Cambiar Avatar</button> */}
+        <button className="change-avatar-button">Cambiar Avatar</button>
             
-            {/* Lista de Avatares
-            <div className="avatar-selection">
-              {avatars.map(avatar => (
-                  <div 
-                      key={avatar.id} 
-                      className="avatar-option" 
-                      onClick={() => onChangeAvatar(avatar)}
-                  >
-                      <img src={avatar.image} alt={avatar.name} className="avatar-thumbnail" />
-                      <span>{avatar.name}</span>
-                  </div>
-              ))}
-          </div> */}
+        {/* Lista de Avatares */}
+        <div className="avatar-selection">
+          {avatars.map(avatar => (
+            <div 
+              key={avatar.id} 
+              className="avatar-option" 
+              onClick={() => onChangeAvatar(avatar)}
+            >
+              <img src={avatar.image} alt={avatar.name} className="avatar-thumbnail" />
+              <span>{avatar.name}</span>
+            </div>
+          ))}
+        </div>
   
         {/* Inventario */}
         <div className="inventory-grid">

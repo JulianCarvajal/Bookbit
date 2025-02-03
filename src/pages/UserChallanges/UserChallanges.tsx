@@ -5,7 +5,7 @@ import ChallengeCard from "../../components/ChallengeCard";
 import CreateChallengeModal from "../../components/CreateChallengeModal";
 import "./UserChallenges.css";
 import { useNavigate } from "react-router-dom";
-import { Challenge, Book } from "../../types/userTypes";
+import { Challenge } from "../../types/userTypes";
 import { getUserChallenges, addChallenges, completeChallenge } from "../../services/challengesService";
 
 const UserChallenges: React.FC = () => {
@@ -38,13 +38,12 @@ const UserChallenges: React.FC = () => {
 
     const handleCreateChallenge = async (challengeToAdd: {
         title: string;
-        book: Book;
         pages: number;
         deathLine: number;
       }) => {
         try {
             setError(null);
-            await addChallenges( challengeToAdd.title, challengeToAdd.book, challengeToAdd.pages, challengeToAdd.deathLine);
+            await addChallenges( challengeToAdd.title, challengeToAdd.pages, challengeToAdd.deathLine);
 
             updateChallenges();
             setSuccessMessage(`"${challengeToAdd.title}" se ha creado con éxito`);
