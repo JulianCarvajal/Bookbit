@@ -4,11 +4,30 @@ import "./UserHome.css";
 import { Header } from "../../components/Header";
 import UserSection from "../../components/UserSection";
 import UserDashboard from "../../components/UserDashboard";
+import { getUserChallenges } from "../../services/challengesService";
 import { AuthContext } from '../../context/AuthContext';
+import { Challenge } from "../../types/userTypes";
 
 export default function UserHome() {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
+    const [challenges, setChallenges] = useState<Challenge[]>([]);
+
+    useEffect(() => {
+        updateChallenges();
+    }, []);
+
+    const updateChallenges = async () => {
+        try {
+            const challengeData = await getUserChallenges();
+            const activeChallenges: Challenge[] = challengeData.filter(
+                (challenge: Challenge) => challenge.state.name !== 'completado'
+            );
+            setChallenges(activeChallenges);
+        } catch (error) {
+            console.error("Error fetching challenges:", error);
+        }
+    };
 
     if (!user) {
         return <div>Cargando...</div>;
@@ -25,12 +44,12 @@ export default function UserHome() {
                 <div className="user-content">
                     <UserSection 
                         title="Tus Retos" 
-                        items={user.challenges?.map(challenge => ({
-                            title: challenge.title,
+                        items={challenges.map(challenge => ({
+                            title: challenge.name,
                             attribute1: "Libro",
-                            value1: "Por definir",
+                            value1: "challenge.book.name",
                             attribute2: "Estado",
-                            value2: "Por definir",
+                            value2: challenge.state.name,
                         })) || []} 
                         manageUrl="/userchallenges" 
                     />

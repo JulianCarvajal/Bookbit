@@ -67,7 +67,7 @@ const UserChallenges: React.FC = () => {
             setChallenges(prevChallenges => 
                 prevChallenges.filter(challenge => challenge.id !== challengeToComplete.id)
             );
-            setSuccessMessage(`"${challengeToComplete.title}" se ha completado con éxito`);
+            setSuccessMessage(`"${challengeToComplete.name}" se ha completado con éxito`);
             setTimeout(() => {
                 setSuccessMessage(null);
             }, 3000);

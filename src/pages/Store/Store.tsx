@@ -5,7 +5,7 @@ import StoreItemCard from "../../components/StoreItemCard";
 import "./Store.css";
 import { useNavigate } from "react-router-dom";
 import { Item } from "../../types/userTypes";
-import { getItems} from "../../services/itemsService";
+import { getItems, buyItem } from "../../services/itemsService";
 
 const Store: React.FC = () => {
   const authContext = useContext(AuthContext);
@@ -22,8 +22,15 @@ const Store: React.FC = () => {
     fetchItems();
   }, []);
 
-  const handleBuy = (itemId: number) => {
-    console.log("Comprando item con id", itemId);
+  // Maneja la compra de un item
+  const handleBuy = async (itemId: number) => {
+    try {
+      await buyItem(itemId);
+      const itemsData = await getItems();
+      setItems(itemsData);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

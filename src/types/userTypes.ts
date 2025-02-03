@@ -19,20 +19,21 @@ export interface AuthState {
 
 export interface Challenge {
     id: number;
-    title: string;
+    name: string;
     book: Book;
     pages: number;
     deathLine: number;
-    coins: number;
-    status: Status;
+    reward: number;
+    state: State;
+    completion_date: Date
 }
 
 export interface Item {
     id: number;
     name: string;
     image: string;
-    category: string;
-    price: number;
+    category: Category;
+    value: number;
 }
 
 export interface Book {
@@ -45,8 +46,13 @@ export interface Book {
     publication_date: string;
 }
 
-export interface Status {
+export interface State {
     id: number;
     name: string;
     category: string;
+}
+
+export interface Category {
+    id: number;
+    name: string;
 }
