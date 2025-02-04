@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Header } from "../../components/Header";
+import AchievementCard from "../../components/AchievementCard";
 import "./UserAchievements.css";
-import { useNavigate } from "react-router-dom";
 import { AchievementXUser } from "../../types/userTypes";
 import { getUserAchievements } from "../../services/achievementService";	
 
 const UserAchievements: React.FC = () => {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
-    const navigate = useNavigate();
     const [userAchievements, setUserAchievements] = useState<AchievementXUser[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -33,7 +32,7 @@ const UserAchievements: React.FC = () => {
             <div className="achievements-page">
                 {user && <Header user={user} />}
                 <div className="achievements-container">
-                    <p>Cargando libros...</p>
+                    <p>Cargando logros...</p>
                 </div>
             </div>
         );
@@ -49,9 +48,9 @@ const UserAchievements: React.FC = () => {
                     <div className="achievements-grid">
                         {userAchievements.length > 0 ? (
                             userAchievements.map((achievement) => (
-                                <p>Renderizar componente achievements</p>
+                                <AchievementCard key={achievement.id} achievementXUser={achievement} />
                             ))
-                        ) : (
+                        ) : ( 
                             <p className="no-achievements">No tienes logros</p>
                         )}
                     </div>

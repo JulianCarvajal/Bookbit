@@ -1,0 +1,86 @@
+.achievement-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 800px;
+    padding: 16px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: 2px solid #933bc0;
+    margin-bottom: 12px;
+}
+
+/* Ajuste de la sección de información */
+.achievement-info {
+    flex: 2;
+    text-align: left;
+}
+
+.achievement-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #ad49e1;
+}
+
+.achievement-description {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Barra de progreso */
+.achievement-progress {
+    flex: 1.5;
+    text-align: center;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #ffc107;
+    transition: width 0.4s ease-in-out;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* Estado del logro */
+.achievement-state {
+    flex: 1;
+    text-align: right;
+}
+
+.state-badge {
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Colores según el estado */
+.completed {
+    background-color: #28a745;
+    color: white;
+}
+
+.in-progress {
+    background-color: #007bff;
+    color: white;
+}
+
+.achievement-date {
+    font-size: 0.8rem;
+    margin-top: 4px;
+    opacity: 0.8;
+}
