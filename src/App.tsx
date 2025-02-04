@@ -12,6 +12,7 @@ import UserBooks from './pages/UserBooks/UserBooks';
 import Library from './pages/Library/Library';
 import Store from './pages/Store/Store';
 import UserChallenges from './pages/UserChallanges/UserChallanges';
+import UserAchievements from './pages/UserAchievements/UserAchievements';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/userbooks" element={<UserBooks />} />
       <Route path="/store" element={<Store />} />
       <Route path="/userchallenges" element={<UserChallenges />} />
+      <Route path="/userachievements" element={<UserAchievements />} />
 
       {/* Ruta para manejar URLs no encontradas */}
       <Route path="*" element={<Navigate to="/" replace />} />
