@@ -20,6 +20,7 @@ const UserAchievements: React.FC = () => {
         try {
             const achievementsData = await getUserAchievements();
             setUserAchievements(achievementsData);
+            console.log("Logros del usuario:", userAchievements);
         } catch (error) {
             console.error("Error fetching achievements:", error);
         } finally {

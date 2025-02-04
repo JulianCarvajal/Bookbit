@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="home">
     <header className="header">
-      <img src="/assets/logo.png" alt="Logo" className="logo" />
+      <img src="https://i.postimg.cc/2SHL6kQt/logo.png" alt="Logo" className="logo" />
       <div className="intro">
         Profe vea pues este proyecto tan chimba
       </div>
