@@ -32,7 +32,8 @@
 .modal-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
+    align-items: center;
 }
 
 .modal-form label {
@@ -45,21 +46,39 @@
 .modal-form input,
 .modal-form select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
     font-size: 1rem;
     color: #333;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease-in-out;
 }
 
 .modal-form input:focus,
 .modal-form select:focus {
     outline: none;
     border-color: #933bc0;
-    box-shadow: 0 0 5px rgba(146, 59, 192, 0.5);
+    box-shadow: 0 0 8px rgba(146, 59, 192, 0.5);
+    background-color: white;
+}
+
+.modal-form label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #622281;
+    width: 100%;
+    text-align: left;
+    margin-bottom: -8px;
+}
+
+.modal-form input:not(:last-of-type),
+.modal-form select {
+    margin-bottom: 5px;
 }
 
 .modal-buttons {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 1.5rem;

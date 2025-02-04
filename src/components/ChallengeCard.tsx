@@ -16,12 +16,16 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge, onComplete, on
                 {challenge.book && <p><strong>Libro:</strong> {challenge.book.name}</p>}
                 <p><strong>Páginas por día:</strong> {challenge.pages}</p>
                 <p><strong>Fecha límite:</strong> {challenge.deathLine}</p>
+                <p><strong>State:</strong> {challenge.state.name}</p>
                 <p><strong>Recompensa:</strong> {challenge.reward} monedas</p>
             </div>
             <div className="challenge-buttons">
-                <button className="challenge-complete-button" onClick={() => onComplete?.(challenge)}>
-                    Completar
-                </button>
+                {/* Renderiza el botón solo si el estado NO es "completado" */}
+                {challenge.state.name !== "completado" && (
+                    <button className="challenge-complete-button" onClick={() => onComplete?.(challenge)}>
+                        Completar
+                    </button>
+                )}
                 <button className="challenge-delete-button" onClick={() => onDelete?.(challenge)}>
                     Eliminar
                 </button>

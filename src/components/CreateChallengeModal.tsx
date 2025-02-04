@@ -39,15 +39,24 @@ const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({ books, onCl
     <div className="modal-overlay">
       <div className="modal-content">
         <h2 className="modal-title">Crea tu próximo reto</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="modal-form">
+          <label htmlFor="title">Nombre del reto</label>
           <input
+            id="title"
             type="text"
-            placeholder="Nombre del reto"
+            placeholder="Ej: Reto de 30 días"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
-          <select value={bookId} onChange={(e) => setBookId(Number(e.target.value))} required>
+
+          <label htmlFor="book">Selecciona un libro</label>
+          <select
+            id="book"
+            value={bookId} 
+            onChange={(e) => setBookId(Number(e.target.value))} 
+            required
+          >
             <option value="" disabled>
               Selecciona un libro
             </option>
@@ -57,14 +66,20 @@ const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({ books, onCl
               </option>
             ))}
           </select>
+
+          <label htmlFor="pages">Páginas</label>
           <input
+            id="pages"
             type="number"
-            placeholder="Número de páginas diarias que quieres leer"
+            placeholder="Total de páginas a leer en el reto. Ej: 300"
             value={pages}
             onChange={(e) => setPages(e.target.value)}
             required
           />
+
+          <label htmlFor="deadline">Días para cumplir el reto</label>
           <input
+            id="deadline"
             type="number"
             placeholder="Cantidad de días para cumplir el reto"
             value={deathLine}
