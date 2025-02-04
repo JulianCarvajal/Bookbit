@@ -46,6 +46,13 @@ export interface Book {
     publication_date: string;
 }
 
+export interface BookXUser {
+    id: number;
+    user: User;
+    book: Book;
+    bookPercentaje: number;
+}
+
 export interface State {
     id: number;
     name: string;
@@ -62,4 +69,27 @@ export interface ItemXUsuario {
     user: User;
     item: Item;
     purchase_date: Date;
+}
+
+export interface Achievement {
+    id: number;
+    name: string;
+    description: string;
+    category: AchievementCategory;
+    condition: number;
+}
+
+export interface AchievementCategory {
+    id: number;
+    name: string;
+}
+
+export interface AchievementXUser {
+    id: number;
+    user: User;
+    achievement: Achievement;
+    dateEarned: Date;
+    progress: number;
+    percentage: number;
+    state: State;
 }

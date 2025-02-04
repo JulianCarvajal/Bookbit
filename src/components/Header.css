@@ -8,11 +8,18 @@
     border-bottom: 2px solid #933bc0;
 }
 
-/* Asegurar alineación correcta de imagen y nombre */
+/* Asegurar alineación correcta de imagen, nombre y monedas */
 .user-info {
     display: flex;
-    align-items: center;  /* Mantiene todo alineado en la misma fila */
+    align-items: center;
     gap: 15px;
+}
+
+/* Contenedor para el nombre y las monedas */
+.user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 /* Imagen redonda con ajuste de tamaño */
@@ -21,20 +28,36 @@
     height: 50px;
     border-radius: 50%;
     border: 2px solid #ad49e1;
-    object-fit: cover;  /* Evita distorsión en imágenes */
+    object-fit: cover;
     display: block;
 }
 
+/* Nombre del usuario */
 .user-name {
     font-size: 1.5rem;
     font-weight: bold;
     color: #ad49e1;
-    margin: 0;  /* Evita que el h1 agregue márgenes extra */
+    margin: 0;
 }
 
+/* Monedas debajo del nombre */
+.user-coins {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffc107;
+}
+
+/* Ícono de monedas */
+.coin-icon {
+    color: #ffc107;
+}
+
+/* Barra de navegación centrada */
 .navbar {
     display: flex;
-    color: white;
     gap: 20px;
 }
 
@@ -48,19 +71,18 @@
     color: #ffc107;
 }
 
-/* Asegurar alineación correcta de monedas */
-.user-coins {
-    display: flex;
-    align-items: center; /* Alinea verticalmente icono y texto */
-    gap: 8px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #ffc107;
+/* Botón de cerrar sesión */
+.logout-button {
+    background: #d9534f;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-/* Ajuste de tamaño del ícono */
-.coin-icon {
-    color: #ffc107;
-    display: flex;  /* Asegura que el icono no tenga espacio no deseado */
-    align-items: center;
+.logout-button:hover {
+    background: #c9302c;
 }

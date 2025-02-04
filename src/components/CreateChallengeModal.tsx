@@ -10,7 +10,7 @@ interface CreateChallengeModalProps {
     book: Book;
     pages: number;
     deathLine: number;
-  }) => void;
+  }, bookId: number) => void;
 }
 
 const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({ books, onClose, onCreate }) => {
@@ -31,7 +31,7 @@ const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({ books, onCl
       book: selectedBook,  // Pasamos el objeto Book completo
       pages: Number(pages),
       deathLine: Number(deathLine),
-    });
+    }, selectedBook.id);
     onClose();
   };
 

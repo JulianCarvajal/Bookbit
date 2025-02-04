@@ -7,12 +7,14 @@ import UserDashboard from "../../components/UserDashboard";
 import { getUserChallenges } from "../../services/challengesService";
 import { getUserItems, modifyAvatar, modifyPet } from "../../services/userService";
 import { AuthContext } from '../../context/AuthContext';
-import { Challenge, Item, User, ItemXUsuario } from "../../types/userTypes";
+import { Challenge, Item, User, ItemXUsuario, BookXUser } from "../../types/userTypes";
+import { getUserBooks } from "../../services/bookService";
 
 export default function UserHome() {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
     const [challenges, setChallenges] = useState<Challenge[]>([]);
+    const [userBooks, setUserBooks] = useState<BookXUser[]>([]);
     const [avatars, setAvatars] = useState<Item[]>([]);
     const [pets, setPets] = useState<Item[]>([]);
     const [currentAvatar, setCurrentAvatar] = useState<string>("");
@@ -21,6 +23,7 @@ export default function UserHome() {
 
     useEffect(() => {
         updateChallenges();
+        updateUserBooks();
         updateAvatars();
         updatePets();
         updateUserItems();
@@ -32,6 +35,15 @@ export default function UserHome() {
             setChallenges(challengeData);
         } catch (error) {
             console.error("Error fetching challenges:", error);
+        }
+    };
+
+    const updateUserBooks = async () => {
+        try {
+            const booksData = await getUserBooks();
+            setUserBooks(booksData);
+        } catch (error) {
+            console.error("Error fetching books:", error);
         }
     };
 
@@ -59,7 +71,6 @@ export default function UserHome() {
             // Obtener el avatar actual del usuario
             const currentAvatar = avatars.find((avatar: Item) => avatar.image === user?.currentAvatar);
             setCurrentAvatar(currentAvatar?.image || "");
-            console.log("currentAvatar", currentAvatar);
         } catch (error) {
             console.error("Error fetching avatars:", error);
         }
@@ -87,7 +98,6 @@ export default function UserHome() {
             // Obtener el avatar actual del usuario
             const currentPet = pets.find((pet: Item) => pet.image === user?.pet);
             setCurrentPet(currentPet?.image || "");
-            console.log("currentPet", currentPet);
         } catch (error) {
             console.error("Error fetching pets:", error);
         }
@@ -96,7 +106,6 @@ export default function UserHome() {
     const handleChangePet = async (pet: Item) => {
         try {
             await modifyPet(pet.id);
-            console.log("Pet cambiado:", pet.id, pet.image);
             setCurrentPet(pet.image);
         } catch (error) {
             console.error("Error changing pet:", error);
@@ -143,12 +152,12 @@ export default function UserHome() {
                     />
                     <UserSection 
                         title="Tu biblioteca" 
-                        items={user.books?.map(book => ({
-                            title: book.name,
+                        items={userBooks.map(userBook => ({
+                            title: userBook.book.name,
                             attribute1: "Autor",
-                            value1: book.author,
+                            value1: userBook.book.author,
                             attribute2: "Editorial",
-                            value2: book.editorial,
+                            value2: userBook.book.editorial,
                         }))} 
                         manageUrl="/userbooks" 
                     />

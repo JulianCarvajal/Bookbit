@@ -5,16 +5,16 @@ import ChallengeCard from "../../components/ChallengeCard";
 import CreateChallengeModal from "../../components/CreateChallengeModal";
 import "./UserChallenges.css";
 import { useNavigate } from "react-router-dom";
-import { Challenge, User } from "../../types/userTypes";
+import { BookXUser, Challenge, User } from "../../types/userTypes";
 import { getUserChallenges, addChallenges, completeChallenge, deleteUserChallenge } from "../../services/challengesService";
+import { getUserBooks } from "../../services/bookService";
 
 const UserChallenges: React.FC = () => {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
-    const userStorage = localStorage.getItem("user");
-    const userId = userStorage ? JSON.parse(userStorage).response.id : 0;
     const navigate = useNavigate();
     const [challenges, setChallenges] = useState<Challenge[]>([]);
+    const [userBooks, setUserBooks] = useState<BookXUser[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -22,6 +22,7 @@ const UserChallenges: React.FC = () => {
 
     useEffect(() => {
         updateChallenges();
+        updateUserBooks();
     }, []);
 
     const updateChallenges = async () => {
@@ -38,14 +39,28 @@ const UserChallenges: React.FC = () => {
         }
     };
 
+    const updateUserBooks = async () => {
+        try {
+            const booksData = await getUserBooks();
+            setUserBooks(booksData);
+        } catch (error) {
+            console.error("Error fetching books:", error);
+        }
+    };
+
     const handleCreateChallenge = async (challengeToAdd: {
         title: string;
         pages: number;
         deathLine: number;
-      }) => {
+      }, bookId: number) => {
         try {
             setError(null);
-            await addChallenges( challengeToAdd.title, challengeToAdd.pages, challengeToAdd.deathLine);
+            await addChallenges( 
+                challengeToAdd.title, 
+                challengeToAdd.pages, 
+                challengeToAdd.deathLine,
+                bookId
+            );
 
             updateChallenges();
             setSuccessMessage(`"${challengeToAdd.title}" se ha creado con éxito`);
@@ -63,8 +78,12 @@ const UserChallenges: React.FC = () => {
 
     const handleCompleteChallenge = async (challengeToComplete: Challenge) => {
         try {
+            console.log(challengeToComplete);
             setError(null);
-            await completeChallenge(challengeToComplete.id, userId);
+            await completeChallenge(
+                challengeToComplete.id, 
+                challengeToComplete.book.id
+            );
             setChallenges(prevChallenges => 
                 prevChallenges.filter(challenge => challenge.id !== challengeToComplete.id)
             );
@@ -148,7 +167,7 @@ const UserChallenges: React.FC = () => {
 
             {isModalOpen && (
                 <CreateChallengeModal 
-                    books={user?.books || []}
+                    books={userBooks.map(userBook => userBook.book) || []}
                     onClose={() => setIsModalOpen(false)} 
                     onCreate={handleCreateChallenge}
                 />

@@ -1,5 +1,3 @@
-import { Book } from "../types/userTypes";
-
 const API_URL = "https://bookbitback-production.up.railway.app";
 
 // Función para obtener el token del usuario logueado
@@ -31,7 +29,7 @@ export const getUserChallenges = async () => {
 };
 
 // Permite que el usuario agregue un reto
-export const addChallenges = async ( name: string, pages: number, deadLine: number) => {
+export const addChallenges = async ( name: string, pages: number, deadLine: number, bookId: number) => {
   try {
     const token = getAuthToken();
     if (!token) throw new Error("Usuario no autenticado");
@@ -42,7 +40,7 @@ export const addChallenges = async ( name: string, pages: number, deadLine: numb
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ name, pages, deadLine })
+      body: JSON.stringify({ name, pages, deadLine, bookId })
     });
 
     if (!response.ok) throw new Error("Error al agregar el libro");
@@ -85,18 +83,17 @@ export const deleteUserChallenge = async (challengeId: number) => {
 };
 
 // Marcar un reto como completado
-export const completeChallenge = async (challengeId: number, userId: number) => {
+export const completeChallenge = async (challengeId: number, bookId: number) => {
   try {
     const token = getAuthToken();
     if (!token) throw new Error("Usuario no autenticado");
 
-    const response = await fetch(`${API_URL}/challenges/${challengeId}/complete`, {
+    const response = await fetch(`${API_URL}/challenges/${challengeId}/complete/${bookId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify({ userId })
     });
 
     if (!response.ok) throw new Error("Error al completar el reto");

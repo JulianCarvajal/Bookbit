@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/Header";
 import BookCard from "../../components/BookCard";
 import "./UserBooks.css";
-import { Book } from "../../types/userTypes";
+import { Book, BookXUser } from "../../types/userTypes";
 import { getUserBooks, deleteUserBook } from "../../services/bookService";
 
 const UserBooks: React.FC = () => {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
     const navigate = useNavigate();
-    const [userBooks, setUserBooks] = useState<Book[]>([]);
+    const [userBooks, setUserBooks] = useState<BookXUser[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -99,12 +99,13 @@ const UserBooks: React.FC = () => {
                     )}
                     <div className="books-slider-container">
                         {userBooks.length > 0 ? (
-                            userBooks.map((book) => (
+                            userBooks.map((userBook) => (
                                 <BookCard
-                                    key={book.id}
-                                    book={book}
+                                    key={userBook.book.id}
+                                    book={userBook.book}
+                                    bookPercentage={userBook.bookPercentaje}
                                     buttonText="Eliminar"
-                                    onButtonClick={() => handleDeleteBook(book)}
+                                    onButtonClick={() => handleDeleteBook(userBook.book)}
                                 />
                             ))
                         ) : (
