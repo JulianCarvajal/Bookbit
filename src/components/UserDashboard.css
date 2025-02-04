@@ -17,26 +17,42 @@
     margin-bottom: 20px;
 }
 
-.avatar, .pet {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid #ad49e1;
+.avatar {
+    width: 200px;
+    height: 250px;
+    border-radius: 10%;
+    object-fit: cover;
+}
+
+.pet {
+    align-self: flex-end;
+    width: 200px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    height: 300px;
 }
 
 /* Inventario tipo Minecraft */
 .inventory-grid {
     display: grid;
-    grid-template-columns: repeat(4, 50px);
+    grid-template-columns: repeat(4, 80px);
     grid-gap: 10px;
     background: rgba(0, 0, 0, 0.6);
     padding: 10px;
     border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .inventory-slot {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     background: rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: center;
@@ -46,8 +62,8 @@
 }
 
 .inventory-item {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
 }
 
 .inventory-slot:hover .item-tooltip {

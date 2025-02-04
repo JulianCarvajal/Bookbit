@@ -6,7 +6,7 @@ import CreateChallengeModal from "../../components/CreateChallengeModal";
 import "./UserChallenges.css";
 import { useNavigate } from "react-router-dom";
 import { Challenge, User } from "../../types/userTypes";
-import { getUserChallenges, addChallenges, completeChallenge } from "../../services/challengesService";
+import { getUserChallenges, addChallenges, completeChallenge, deleteUserChallenge } from "../../services/challengesService";
 
 const UserChallenges: React.FC = () => {
     const authContext = useContext(AuthContext);
@@ -80,7 +80,21 @@ const UserChallenges: React.FC = () => {
     };
 
     const handleDeleteChallenge = async (challengeToDelete: Challenge) => {
-        // TODO: Implementar la lógica para eliminar un reto
+        try {
+            setError(null);
+            await deleteUserChallenge(challengeToDelete.id);
+            setChallenges(prevChallenges => 
+                prevChallenges.filter(challenge => challenge.id !== challengeToDelete.id)
+            );
+            setSuccessMessage(`"${challengeToDelete.name}" se ha eliminado con éxito`);
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+            
+        } catch (error) {
+            setError("Error al eliminar el reto. Por favor, intenta de nuevo.");
+            console.error("Error al eliminar el reto:", error);
+        }
     };
 
     if (isLoading) {

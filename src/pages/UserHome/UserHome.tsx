@@ -5,20 +5,25 @@ import { Header } from "../../components/Header";
 import UserSection from "../../components/UserSection";
 import UserDashboard from "../../components/UserDashboard";
 import { getUserChallenges } from "../../services/challengesService";
-import { getUserItems, modifyAvatar } from "../../services/userService";
+import { getUserItems, modifyAvatar, modifyPet } from "../../services/userService";
 import { AuthContext } from '../../context/AuthContext';
-import { Challenge, Item, User } from "../../types/userTypes";
+import { Challenge, Item, User, ItemXUsuario } from "../../types/userTypes";
 
 export default function UserHome() {
     const authContext = useContext(AuthContext);
     const user = authContext?.user;
     const [challenges, setChallenges] = useState<Challenge[]>([]);
     const [avatars, setAvatars] = useState<Item[]>([]);
-    const [currentAvatar, setCurrentAvatar] = useState<Item>();
+    const [pets, setPets] = useState<Item[]>([]);
+    const [currentAvatar, setCurrentAvatar] = useState<string>("");
+    const [currentPet, setCurrentPet] = useState<string>("");
+    const [ userItems, setUserItems ] = useState<Item[]>([]);
 
     useEffect(() => {
         updateChallenges();
         updateAvatars();
+        updatePets();
+        updateUserItems();
     }, []);
 
     const updateChallenges = async () => {
@@ -30,11 +35,31 @@ export default function UserHome() {
         }
     };
 
+    const updateUserItems = async () => {
+        try {
+            const items = await getUserItems();
+            const userItems = items.map((item: ItemXUsuario) => item.item);
+            setUserItems(userItems);
+        } catch (error) {
+            console.error("Error fetching items:", error);
+        }
+    };
+
     const updateAvatars = async () => {
         try {
             const items = await getUserItems();
-            const avatars: Item[] = items.filter((item: Item) => item.category.name === "avatar");
+            
+            // Extraer solo los objetos `item` cuyo category.name sea "avatar"
+            const avatars: Item[] = items
+                .filter((object: ItemXUsuario) => object.item.category.name === "avatar")
+                .map((object: ItemXUsuario) => object.item); // Extraer solo la propiedad "item"
+    
             setAvatars(avatars);
+
+            // Obtener el avatar actual del usuario
+            const currentAvatar = avatars.find((avatar: Item) => avatar.image === user?.currentAvatar);
+            setCurrentAvatar(currentAvatar?.image || "");
+            console.log("currentAvatar", currentAvatar);
         } catch (error) {
             console.error("Error fetching avatars:", error);
         }
@@ -43,9 +68,38 @@ export default function UserHome() {
     const handleChangeAvatar = async (avatar: Item) => {
         try {
             await modifyAvatar(avatar.id);
-            setCurrentAvatar(avatar);
+            setCurrentAvatar(avatar.image);
         } catch (error) {
             console.error("Error changing avatar:", error);
+        }
+    };
+
+    const updatePets = async () => {
+        try {
+            const items = await getUserItems();
+
+            const pets: Item[] = items
+                .filter((object: ItemXUsuario) => object.item.category.name === "mascota")
+                .map((object: ItemXUsuario) => object.item);
+    
+            setPets(pets);
+
+            // Obtener el avatar actual del usuario
+            const currentPet = pets.find((pet: Item) => pet.image === user?.pet);
+            setCurrentPet(currentPet?.image || "");
+            console.log("currentPet", currentPet);
+        } catch (error) {
+            console.error("Error fetching pets:", error);
+        }
+    };
+
+    const handleChangePet = async (pet: Item) => {
+        try {
+            await modifyPet(pet.id);
+            console.log("Pet cambiado:", pet.id, pet.image);
+            setCurrentPet(pet.image);
+        } catch (error) {
+            console.error("Error changing pet:", error);
         }
     };
 
@@ -67,7 +121,11 @@ export default function UserHome() {
                     user={user} 
                     avatars={avatars}
                     currentAvatar={currentAvatar}
+                    pets={pets}
+                    currentPet={currentPet}
+                    userItems={userItems}
                     onChangeAvatar={handleChangeAvatar} 
+                    onChangePet={handleChangePet}
                 />
                 
                 {/* Sección derecha - Retos y Librería */}

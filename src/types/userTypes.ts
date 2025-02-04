@@ -56,3 +56,10 @@ export interface Category {
     id: number;
     name: string;
 }
+
+export interface ItemXUsuario {
+    id: number;
+    user: User;
+    item: Item;
+    purchase_date: Date;
+}

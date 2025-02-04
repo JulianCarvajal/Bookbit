@@ -1,0 +1,129 @@
+/* Fondo semitransparente detrás del modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Contenedor principal del modal */
+.modal-container {
+    background: rgba(255, 255, 255);
+    border-radius: 12px;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Título del modal */
+.modal-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Contenedor de los avatares */
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+    padding: 10px;
+    justify-content: center;
+}
+
+/* Estilos de cada avatar */
+.avatar-slot {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s ease, border 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Imagen del avatar */
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Efecto cuando un avatar es seleccionado */
+.avatar-slot.selected {
+    border-color: #007bff;
+    transform: scale(1.1);
+}
+
+/* Contenedor de los botones */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* Estilos para el botón de cancelar */
+.cancel-button {
+    background: #ccc;
+    color: #333;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.cancel-button:hover {
+    background: #b3b3b3;
+}
+
+/* Estilos para el botón de confirmar */
+.confirm-button {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex: 1;
+}
+
+.confirm-button:disabled {
+    background: #a0c4ff;
+    cursor: not-allowed;
+}
+
+.confirm-button:hover:not(:disabled) {
+    background: #0056b3;
+}
