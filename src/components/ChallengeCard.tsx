@@ -15,7 +15,6 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge, onComplete, on
             <div className="challenge-info">
                 {challenge.book && <p><strong>Libro:</strong> {challenge.book.name}</p>}
                 <p><strong>Páginas por día:</strong> {challenge.pages}</p>
-                <p><strong>Fecha límite:</strong> {challenge.deathLine}</p>
                 <p><strong>State:</strong> {challenge.state.name}</p>
                 <p><strong>Recompensa:</strong> {challenge.reward} monedas</p>
             </div>
